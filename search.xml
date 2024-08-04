@@ -3,6 +3,350 @@
   
     
     <entry>
+      <title><![CDATA[android中线程间通信]]></title>
+      <url>/2024/08/01/android%E4%B8%AD%E7%BA%BF%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</url>
+      <content type="html"><![CDATA[<h1 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h1><p>Handle是一套 Android 消息传递机制,主要用于线程间通信</p>
+<p>handler其实就是主线程在起了一个子线程，子线程运行并生成Message，Looper获取message并传递给Handler，Handler逐个获取子线程中的Message</p>
+<p>Binder&#x2F;Socket用于进程间通信</p>
+<ul>
+<li>Message ：代表一个行为或者一串动作 每一个消息在加入消息队列时,都有明确的目标Handler</li>
+<li>ThreadLocal： 线程本地存储区（Thread Local Storage，简称为TLS）ThreadLocal的作用是提供线程内的局部变量TLS,这种变量在线程的生命周期内起作用</li>
+<li>MessageQueue  ：以队列的形式对外提供插入和删除的工作</li>
+<li>Looper  ：Looper是循环的意思,它负责从消息队列中循环的取出消息然后把消息交给Handler处理</li>
+<li>Handler ：消息的真正处理者, 具备获取消息、发送消息、处理消息、移除消息等功能</li>
+</ul>
+<h2 id="消息机制"><a href="#消息机制" class="headerlink" title="消息机制"></a>消息机制</h2><ul>
+<li>以Handler的sendMessage方法为例，当发送一个消息后，会将此消息加入消息队列MessageQueue中。</li>
+<li>Looper负责去遍历消息队列并且将队列中的消息分发给对应的Handler进行处理。</li>
+<li>在Handler的handleMessage方法中处理该消息，这就完成了一个消息的发送和处理过程。</li>
+</ul>
+<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><p>创建 Handler</p>
+<p>将 Handler 定义成静态的内部类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">public class HandlerActivity extends AppCompatActivity &#123;</span><br><span class="line"></span><br><span class="line">    private Button bt_handler_send;</span><br><span class="line"></span><br><span class="line">    private static class MyHandler extends Handler &#123;</span><br><span class="line"></span><br><span class="line">        //弱引用持有HandlerActivity , GC 回收时会被回收掉</span><br><span class="line">        private WeakReference&lt;HandlerActivity&gt; weakReference;</span><br><span class="line"></span><br><span class="line">        public MyHandler(HandlerActivity activity) &#123;</span><br><span class="line">            this.weakReference = new WeakReference(activity);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void handleMessage(Message msg) &#123;</span><br><span class="line">            HandlerActivity activity = weakReference.get();</span><br><span class="line">            super.handleMessage(msg);</span><br><span class="line">            if (null != activity) &#123;</span><br><span class="line">                //执行业务逻辑</span><br><span class="line">            Toast.makeText(activity,&quot;handleMessage&quot;,Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.HandlerActivity);</span><br><span class="line"></span><br><span class="line">        //创建 Handler</span><br><span class="line">        final MyHandler handler = new MyHandler(this);</span><br><span class="line"></span><br><span class="line">        bt_handler_send = findViewById(R.id.bt_handler_send);</span><br><span class="line">        bt_handler_send.setOnClickListener(new View.OnClickListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onClick(View v) &#123;</span><br><span class="line">                new Thread(new Runnable() &#123;</span><br><span class="line">                    @Override</span><br><span class="line">                    public void run() &#123;</span><br><span class="line">                        //使用 handler 发送空消息</span><br><span class="line">                        handler.sendEmptyMessage(0);</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;).start();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @Override</span><br><span class="line">    protected void onDestroy() &#123;</span><br><span class="line">        //移除所有回调及消息</span><br><span class="line">        myHandler.removeCallbacksAndMessages(null);</span><br><span class="line">        super.onDestroy();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Message 获取</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Message message = myHandler.obtainMessage(); 		   //通过 Handler 实例获取</span><br><span class="line">Message message1 = Message.obtain();   			      //通过 Message 获取</span><br><span class="line">Message message2 = new Message();      				 //直接创建新的 Message 实例</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Handler 发送消息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public final boolean post(Runnable r)</span><br><span class="line">&#123;</span><br><span class="line">   return  sendMessageDelayed(getPostMessage(r), 0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">private static class MyHandler extends Handler &#123;</span><br><span class="line">        private final WeakReference&lt;MainActivity&gt; mTarget;</span><br><span class="line"></span><br><span class="line">        public MyHandler(MainActivity activity) &#123;</span><br><span class="line">            mTarget = new WeakReference&lt;MainActivity&gt;(activity);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void handleMessage(@NonNull Message msg) &#123;</span><br><span class="line">            super.handleMessage(msg);</span><br><span class="line">            HandlerActivity activity = weakReference.get();</span><br><span class="line">            super.handleMessage(msg);</span><br><span class="line">            if (null != activity) &#123;</span><br><span class="line">                //执行业务逻辑</span><br><span class="line">                if (msg.what == 0) &#123;</span><br><span class="line">                	Log.e(&quot;myhandler&quot;, &quot;change textview&quot;);</span><br><span class="line">                	MainActivity ma = mTarget.get();</span><br><span class="line">	                ma.textView.setText(&quot;hahah&quot;);</span><br><span class="line">            	&#125;</span><br><span class="line">                Toast.makeText(activity,&quot;handleMessage&quot;,Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125;</span><br><span class="line">        </span><br><span class="line">        &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[android读入sd卡]]></title>
+      <url>/2024/07/29/android%E8%AF%BB%E5%85%A5sd%E5%8D%A1/</url>
+      <content type="html"><![CDATA[<h1 id="sd卡的读写操作"><a href="#sd卡的读写操作" class="headerlink" title="sd卡的读写操作"></a>sd卡的读写操作</h1><h2 id="HttpURLConnection"><a href="#HttpURLConnection" class="headerlink" title="HttpURLConnection"></a>HttpURLConnection</h2><p>HttpURLConnection是基于[http协议的，支持GET、POST、PUT、DELETE等各种请求方式。如果使用HTTPS协议请求，可以使用它的子类HttpsURLConnection完成更安全的请求操作</p>
+<h3 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h3><ol>
+<li><p>创建一个URL对象：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URL url=new URL(“接口地址”)</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>调用URL对象的openConnection()来获取HttpURLConnection对象实例；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HttpURLConnection connection= (HttpURLConnection) url.openConnection();</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>设置HTTP请求使用的方法：GET、POST或其他请求；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connection.setRequestMethod(“GET”);</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>设置连接超时，读取超时的毫秒数，以及服务器希望得到的一些消息头；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">connection.setConnectTimeout(6*1000);</span><br><span class="line"></span><br><span class="line">connection.setReadTimeout(6 * 1000);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">   </span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>调用getInputStream()方法获得服务器返回的输入流，然后输入流进行读取了；</p>
+<p>InputStream in &#x3D; connection.getInputStream();</p>
+</li>
+<li><p>最后调用disconnect()方法将HTTP连接关掉；</p>
+<p>connection.disconnect();</p>
+</li>
+</ol>
+<h3 id="使用参数"><a href="#使用参数" class="headerlink" title="使用参数"></a>使用参数</h3><p>setRequestProperty(key,value)【设置请求头】：设置一般请求属性。如果已存在具有该关键字的属性，则用新值改写其值。注：HTTP 要求所有能够合法拥有多个具有相同键的实例的请求属性，使用以逗号分隔的列表语法</p>
+<p>addRequestProperty(key,value)【设置响应体】：添加由键值对指定的一般请求属性</p>
+<p>getOutputStream【发送URL请求】：建立实际连接之后，就是发送请求，把请求参数传到服务器</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">public void testDoGet()&#123;</span><br><span class="line">        String api=&quot;&quot;;</span><br><span class="line">        HttpURLConnection connection = null;</span><br><span class="line">        InputStream in=null;</span><br><span class="line">        BufferedReader reader=null;</span><br><span class="line">        try&#123;</span><br><span class="line">            //构造一个URL对象</span><br><span class="line">            URL url = new URL(api);</span><br><span class="line">            //获取URLConnection对象</span><br><span class="line">            connection= (HttpURLConnection) url.openConnection();</span><br><span class="line">            in = connection.getInputStream();</span><br><span class="line">            reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));</span><br><span class="line">            StringBuilder sb = new StringBuilder();</span><br><span class="line">            String line = null;</span><br><span class="line">            //按行读取</span><br><span class="line">            while ((line = reader.readLine()) != null) &#123;</span><br><span class="line">                sb.append(line);</span><br><span class="line">            &#125;</span><br><span class="line">            String response= sb.toString();</span><br><span class="line">            System.out.println(response);</span><br><span class="line">        &#125;catch (Exception exception)&#123;</span><br><span class="line">            exception.printStackTrace();</span><br><span class="line">        &#125;finally &#123;</span><br><span class="line">            if (connection != null) &#123;</span><br><span class="line">                connection.disconnect();</span><br><span class="line">            &#125;</span><br><span class="line">            if (in != null) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    in.close();</span><br><span class="line">                &#125; catch (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if (reader != null) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    reader.close();</span><br><span class="line">                &#125; catch (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="AsyncTask异步操作"><a href="#AsyncTask异步操作" class="headerlink" title="AsyncTask异步操作"></a>AsyncTask异步操作</h2><p>AsyncTask&lt;Void, Void, Void&gt; 参数:</p>
+<ul>
+<li>异步任务开始时 , execute() 方法传入的参数类型 , 也是 doInBackground() 方法传入的参数类型 ;</li>
+<li>异步任务执行时 , 进度值类型 , onProgressUpdate() 方法传入的参数类型 ;</li>
+<li>异步任务结束时 , 结果类型 , onPostExecute() 方法传入参数类型 , 或 onCancelled() 方法参数</li>
+</ul>
+<h3 id="使用步骤-1"><a href="#使用步骤-1" class="headerlink" title="使用步骤"></a>使用步骤</h3><p>自定义 AsyncTask 异步任务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">package kim.hsl.aa;</span><br><span class="line"></span><br><span class="line">import android.os.AsyncTask;</span><br><span class="line">public class MyAsyncTask extends AsyncTask&lt;String, Integer, Boolean&gt; &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onPreExecute() &#123;</span><br><span class="line">        super.onPreExecute();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected Boolean doInBackground(String... strings) &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onProgressUpdate(Integer... values) &#123;</span><br><span class="line">        // 在 doInBackground 中调用了 publishProgress 方法, 就会回调该方法</span><br><span class="line">        super.onProgressUpdate(values);</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCancelled() &#123;</span><br><span class="line">        super.onCancelled();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCancelled(Boolean aBoolean) &#123;</span><br><span class="line">        super.onCancelled(aBoolean);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>调用异步任务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class MainActivity extends AppCompatActivity &#123;</span><br><span class="line">    private MyAsyncTask mMyAsyncTask;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">        // 创建并执行异步任务</span><br><span class="line">        mMyAsyncTask = new MyAsyncTask();</span><br><span class="line">        mMyAsyncTask.execute();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="sd卡的读写"><a href="#sd卡的读写" class="headerlink" title="sd卡的读写"></a>sd卡的读写</h2><p>在SD卡目录下创建文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">File file = new File(Environment.getExternalStorageDirectory(), &quot;mysdcard.txt&quot;);</span><br><span class="line">Log.d(TAG, &quot;file.exists():&quot; + file.exists() + &quot; file.getAbsolutePath():&quot;+ file.getAbsolutePath());</span><br><span class="line">if (file.exists()) &#123;</span><br><span class="line">    file.delete();</span><br><span class="line">    file.createNewFile();</span><br><span class="line">&#125;</span><br><span class="line">// Toast.makeText(MainActivity.this, &quot;SD卡目录下创建文件成功...&quot;, Toast.LENGTH_LONG).show();</span><br><span class="line">Log.d(TAG, &quot;SD卡目录下创建文件成功...&quot;);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在SD卡目录下的文件，写入内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FileWriter fw = new FileWriter(file);</span><br><span class="line">fw.write(&quot;我的sdcard内容.....&quot;);</span><br><span class="line">fw.close();</span><br><span class="line">// Toast.makeText(MainActivity.this, &quot;SD卡写入内容完成...&quot;,Toast.LENGTH_LONG).show();</span><br><span class="line">Log.d(TAG, &quot;SD卡写入内容完成...&quot;);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>读取SD卡文件里面的内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FileReader fr = new FileReader(&quot;/mnt/sdcard/mysdcard.txt&quot;);</span><br><span class="line">BufferedReader r = new BufferedReader(fr);</span><br><span class="line">String result = r.readLine();</span><br><span class="line">Log.d(TAG, &quot;SD卡文件里面的内容:&quot; + result);</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[android的四大组件]]></title>
+      <url>/2024/07/21/android%E7%9A%84%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/</url>
+      <content type="html"><![CDATA[<h1 id="四大组件"><a href="#四大组件" class="headerlink" title="四大组件"></a>四大组件</h1><ol>
+<li>活动（activity），用于表现功能</li>
+<li>服务（service），后台运行服务，不提供界面呈现</li>
+<li>广播接受者（Broadcast Receive），勇于接收广播</li>
+<li>内容提供者（Content Provider），支持多个应用中存储和读取数据，相当于数据库</li>
+</ol>
+<h2 id="活动"><a href="#活动" class="headerlink" title="活动"></a>活动</h2><p>定义：是用户操作的可视化界面；它为用户提供了一个完成操作指令的窗口。当我们创建完毕Activity之后，需要调用setContentView()方法来完成界面的显示</p>
+<p>一个Activity通常就是一个单独的屏幕</p>
+<p>可以类比为windows开发中的窗口</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public class FirstActivity extends AppCompatActivity &#123;</span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:orientation=&quot;vertical&quot; android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;Button</span><br><span class="line">        android:id=&quot;@+id/button_1&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:text=&quot;Button 1&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/LinearLayout&gt;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Actiity生命周期"><a href="#Actiity生命周期" class="headerlink" title="Actiity生命周期"></a>Actiity生命周期</h3><p> 在Android中会维持一个Activity Stack（Activity栈），当一个新的Activity创建时，它就会放到栈顶，这个Activity就处于运行状态。当再有一个新的Activity被创建后，会重新压人栈顶，而之前的Activity则会在这个新的Activity底下，就像枪梭压入子弹一样。而且之前的Activity就会进入后台</p>
+<h3 id="四种状态"><a href="#四种状态" class="headerlink" title="四种状态"></a>四种状态</h3><ul>
+<li>a.运行中(Running&#x2F;Active):这时Activity位于栈顶，可见可交互</li>
+<li>b.暂停(Paused):可见不可交互。当一个新的非全屏的Activity或者一个透明的Activity放置在栈顶，Activity就处于暂停状态；这个时候Activity的各种数据还被保持着；只有在系统内存在极低的状态下，系统才会自动的去销毁Activity。</li>
+<li>c.停止(Stoped):当一个Activity被另一个Activity完全覆盖，或者点击HOME键退入了后台，这时候Activity处于停止状态。这里有些是跟暂停状态相似的：这个时候Activity的各种数据还被保持着；当系统的别的地方需要用到内容时，系统会自动的去销毁Activity。</li>
+<li>d.销毁(Detroyed):点击返回键或者系统在内存不够用的情况下就会把Activity从栈里移除销毁，被系统回收，这时候，Activity处于销毁状态。</li>
+</ul>
+<h2 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h2><p>它通常用作在后台处理耗时的逻辑，与Activity一样，它存在自己的生命周期，也需要在AndroidManifest.xml配置相关信息</p>
+<p>是Android中实现程序后台运行的解决方案，它非常适合去执行那些不需要和用户交互而且还要求长期运行的任务。服务的运行不依赖于任何用户界面，即使程序被切换到后台，或者用户打开了另外一个应用程序，服务仍然能够保持正常运行</p>
+<p>不过需要注意的是，服务并不是运行在一个独立的进程当中的，而是依赖于创建服务时所在的应用程序进程</p>
+<p>类似于c++中的窗口接口函数</p>
+<h3 id="service用于在后台"><a href="#service用于在后台" class="headerlink" title="service用于在后台"></a>service用于在后台</h3><ul>
+<li>started（启动）：当应用程序组件（如activity）调用startService()方法启动服务时，服务处于started状态。</li>
+<li>bound（绑定）：当应用程序组件调用bindService()方法绑定到服务时，服务处于bound状态。</li>
+</ul>
+<h3 id="startService"><a href="#startService" class="headerlink" title="startService()"></a>startService()</h3><p>started service（启动服务）是由其他组件调用startService()方法启动的，其生命周期与启动它的组件无关，并且可以在后台无限期运行，即使启动服务的组件已经被销毁。因此，服务需要在完成任务后调用stopSelf()方法停止，或者由其他组件调用stopService()方法停止</p>
+<h3 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">public class TestOneService extends Service&#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onCreate() &#123;</span><br><span class="line">        Log.i(&quot;Kathy&quot;,&quot;onCreate - Thread ID = &quot; + Thread.currentThread().getId());</span><br><span class="line">        super.onCreate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int onStartCommand(Intent intent, int flags, int startId) &#123;</span><br><span class="line">        Log.i(&quot;Kathy&quot;, &quot;onStartCommand - startId = &quot; + startId + &quot;, Thread ID = &quot; + Thread.currentThread().getId());</span><br><span class="line">        return super.onStartCommand(intent, flags, startId);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Nullable</span><br><span class="line">    @Override</span><br><span class="line">    public IBinder onBind(Intent intent) &#123;</span><br><span class="line">        Log.i(&quot;Kathy&quot;, &quot;onBind - Thread ID = &quot; + Thread.currentThread().getId());</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onDestroy() &#123;</span><br><span class="line">        Log.i(&quot;Kathy&quot;, &quot;onDestroy - Thread ID = &quot; + Thread.currentThread().getId());</span><br><span class="line">        super.onDestroy();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public class MainActivity extends AppCompatActivity &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        Log.i(&quot;Kathy&quot;, &quot;Thread ID = &quot; + Thread.currentThread().getId());</span><br><span class="line">        Log.i(&quot;Kathy&quot;, &quot;before StartService&quot;);</span><br><span class="line"></span><br><span class="line">        //连续启动Service</span><br><span class="line">        Intent intentOne = new Intent(this, TestOneService.class);</span><br><span class="line">        startService(intentOne);</span><br><span class="line">        Intent intentTwo = new Intent(this, TestOneService.class)</span><br><span class="line">        //停止Service</span><br><span class="line">        Intent intentFour = new Intent(this, TestOneService.class);</span><br><span class="line">        stopService(intentFour);</span><br><span class="line"></span><br><span class="line">        //再次启动Service</span><br><span class="line">        Intent intentFive = new Intent(this, TestOneService.class);</span><br><span class="line">        startService(intentFive);</span><br><span class="line"></span><br><span class="line">        Log.i(&quot;Kathy&quot;, &quot;after StartService&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="广播接受器"><a href="#广播接受器" class="headerlink" title="广播接受器"></a>广播接受器</h2><p>广播接收器是对发送出来的广播进行过滤接受并响应的一类组件。可以使用广播接收器来让应用对一个外部时间做出响应，广播接收器通过NotificationManager方法来通知用户这些事情发生了。广播接收器既可以在AndroidManifest.xml中注册，也可以在运行时的代码中使用</p>
+<p>广播接收器没有用户界面。然而，它们可以启动一个activity或serice来响应它们收到的信息，或者用NotificationManager来通知用户。通知可以用很多种方式来吸引用户的注意力，例如闪动背灯、震动、播放声音等。一般来说是在状态栏上放一个持久的图标，用户可以打开它并获取消息。</p>
+<p>注册有两种方法，分别是程序动态注册【在运行时的代码中使用Context.registerReceive（）进行注册】和AndroidManifest文件中进行静态注册</p>
+<p>类似于windows中的消息接受处理函数</p>
+<h3 id="使用-2"><a href="#使用-2" class="headerlink" title="使用"></a>使用</h3><p>创建一个广播接收器BroadcastReceiver ，广播也是通过Intent来传递数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class MyReceiver extends BroadcastReceiver &#123;</span><br><span class="line">    private static final String TAG = &quot;MyReceiver&quot;;</span><br><span class="line">    @Override</span><br><span class="line">    public void onReceive(Context context, Intent intent) &#123;</span><br><span class="line">        String msg=intent.getStringExtra(&quot;msg&quot;);</span><br><span class="line">        Log.e(TAG, &quot;onReceive: &quot;+msg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>清单文件注册该广播</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">application</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:allowBackup</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:icon</span>=<span class="string">&quot;@mipmap/ic_launcher&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:label</span>=<span class="string">&quot;@string/app_name&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:supportsRtl</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:theme</span>=<span class="string">&quot;@style/Theme.MyApplication&quot;</span>&gt;</span></span><br><span class="line"> </span><br><span class="line">	<span class="tag">&lt;<span class="name">receiver</span> <span class="attr">android:name</span>=<span class="string">&quot;.receiver.MyReceiver&quot;</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:exported</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">	</span><br><span class="line"><span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在其它组件里面发送广播，比如Activity里面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">private void Acitivity()&#123;</span><br><span class="line">	Intent intent = new Intent(this, MyReceiver.class);</span><br><span class="line">	sendBroadcast(intent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="内容提供器"><a href="#内容提供器" class="headerlink" title="内容提供器"></a>内容提供器</h2><p>给多个应用提供数据，例，APP A的数据库内容不可被APP B进行读取的，此时，一个内容提供者，可以将APP A中的数据信息提供给APP B</p>
+<ul>
+<li>获取通讯录中的<code>联系人</code>，申请好友。</li>
+<li>获取其他软件<code>搜索记录</code>，大数据计算，进行产品推送。</li>
+<li>预约直播，将<code>预约信息</code>写入手机备忘</li>
+</ul>
+<p>这一组件暂时不做过多记录</p>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[java输入输出]]></title>
+      <url>/2024/07/18/java%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/</url>
+      <content type="html"><![CDATA[<h1 id="输入输出流"><a href="#输入输出流" class="headerlink" title="输入输出流"></a>输入输出流</h1><table>
+<thead>
+<tr>
+<th></th>
+<th>输入流</th>
+<th>输出流</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>字节流</td>
+<td>InputStream</td>
+<td>OutputStream</td>
+</tr>
+<tr>
+<td>字符流</td>
+<td>Reader</td>
+<td><code>Writer</code></td>
+</tr>
+</tbody></table>
+<h2 id="输入到控制台"><a href="#输入到控制台" class="headerlink" title="输入到控制台"></a>输入到控制台</h2><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class test &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        System.out.println(msg);//输出一个字符串并换行</span><br><span class="line">        System.out.print(msg);//输出一个字符串不换行</span><br><span class="line">        System.out.printf(format,msg);//格式化输出</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>println输出的内容自带\n，print不带\n。</li>
+<li>printf的格式化输出方式和C语言中的printf基本是一致的。</li>
+</ul>
+<p>类似c语言的占位输出符</p>
+<table>
+<thead>
+<tr>
+<th>转换符</th>
+<th>类型</th>
+<th>举例</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>d</td>
+<td>十进制整数</td>
+<td>（“%d”,100）</td>
+<td>100</td>
+</tr>
+<tr>
+<td>x</td>
+<td>十六进制整数</td>
+<td>（”%x“,100）</td>
+<td>64</td>
+</tr>
+<tr>
+<td>o</td>
+<td>八进制整数</td>
+<td>（”%o“,100）</td>
+<td>144</td>
+</tr>
+<tr>
+<td>f</td>
+<td>定点浮点数</td>
+<td>（”%f“,100f）</td>
+<td>100.000000</td>
+</tr>
+<tr>
+<td>e</td>
+<td>指数浮点数</td>
+<td>（”%e“,100f）</td>
+<td>1.000000e+02</td>
+</tr>
+<tr>
+<td>g</td>
+<td>通用浮点数</td>
+<td>（”%g“,100）</td>
+<td>100.000</td>
+</tr>
+<tr>
+<td>a</td>
+<td>十六进制浮点数</td>
+<td>（”%a“,100）</td>
+<td>0x1.9p6</td>
+</tr>
+<tr>
+<td>s</td>
+<td>字符串</td>
+<td>（”%s“,“100”）</td>
+<td>100</td>
+</tr>
+<tr>
+<td>c</td>
+<td>字符</td>
+<td>（”%c“,‘1’）</td>
+<td>1</td>
+</tr>
+<tr>
+<td>b</td>
+<td>布尔值</td>
+<td>（”%b“,100）</td>
+<td>true</td>
+</tr>
+<tr>
+<td>%</td>
+<td>百分号</td>
+<td>（”%。2f%%“,2&#x2F;7f）</td>
+<td>0.29%</td>
+</tr>
+</tbody></table>
+<h2 id="从键盘输入"><a href="#从键盘输入" class="headerlink" title="从键盘输入"></a>从键盘输入</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import java.util.Scanner;//导入util包</span><br><span class="line"></span><br><span class="line">public class test &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Scanner scanner = new Scanner(System.in);</span><br><span class="line">        int num = scanner.nextInt();//从键盘输入一个数字</span><br><span class="line">        System.out.println(num);//输出该数字</span><br><span class="line">        sc.close();//注意，要记得调用关闭方法</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="OutputStream与InputStream"><a href="#OutputStream与InputStream" class="headerlink" title="OutputStream与InputStream"></a>OutputStream与InputStream</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import java.io.*;</span><br><span class="line"> </span><br><span class="line">public class InputStreamOutputStreamExample &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            // 创建一个文件输入流对象，用于读取文件内容</span><br><span class="line">            FileInputStream fis = new FileInputStream(&quot;input.txt&quot;);</span><br><span class="line"> </span><br><span class="line">            // 创建一个文件输出流对象，用于将数据写入文件</span><br><span class="line">            FileOutputStream fos = new FileOutputStream(&quot;output.txt&quot;);</span><br><span class="line">            byte[] buffer = new byte[1024];</span><br><span class="line">            int bytesRead;</span><br><span class="line">            while ((bytesRead = fis.read(buffer)) != -1) &#123;</span><br><span class="line">                fos.write(buffer, 0, bytesRead);</span><br><span class="line">            &#125;</span><br><span class="line">            fis.close();</span><br><span class="line">            fos.close();</span><br><span class="line"> </span><br><span class="line">            System.out.println(&quot;文件复制成功！&quot;);</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="read方法"><a href="#read方法" class="headerlink" title="read方法"></a>read方法</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h3 id="read"><a href="#read" class="headerlink" title="read()"></a>read()</h3><p>从输入流中读取数据的下一个字节到程序内部中，返回值为字符的ASCII值，否则为-1</p>
+<h3 id="read-byte-b"><a href="#read-byte-b" class="headerlink" title="read(byte [] b )"></a>read(byte [] b )</h3><p>从输入流中读取的一定数量字节数,并将它们存储到缓冲区数组b中，返回值为实际读取的字节数</p>
+<h3 id="read-byte-b-int-off-int-len"><a href="#read-byte-b-int-off-int-len" class="headerlink" title="read( byte [] b , int off , int len)"></a>read( byte [] b , int off , int len)</h3><p>读取 len字节的数据从输入流到一个字节数组，返回实际读取的字节数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">package com.yiibai;</span><br><span class="line"></span><br><span class="line">import java.io.FileInputStream;</span><br><span class="line">import java.io.InputStream;</span><br><span class="line"></span><br><span class="line">public class InputStreamDemo &#123;</span><br><span class="line">   public static void main(String[] args) throws Exception &#123;</span><br><span class="line">      </span><br><span class="line">      InputStream is = null;</span><br><span class="line">      byte[] buffer=new byte[5];</span><br><span class="line">      char c;</span><br><span class="line">      try&#123;</span><br><span class="line">         // 文本内容为 ABCDE</span><br><span class="line">         is = new FileInputStream(&quot;C://test.txt&quot;);</span><br><span class="line">         // 这个2指的是数据偏移 不是流偏移</span><br><span class="line">         is.read(buffer, 2, 3);</span><br><span class="line">         // 循环字节数据</span><br><span class="line">         for(byte b:buffer)&#123;</span><br><span class="line">            if(b==0)</span><br><span class="line">               // 偏移了2个单位数组默认值为0,所以前面2个单位是没有的</span><br><span class="line">               c=&#x27;-&#x27;;</span><br><span class="line">            else</span><br><span class="line">               c=(char)b;</span><br><span class="line">            System.out.print(c);</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;catch(Exception e)&#123;</span><br><span class="line">         e.printStackTrace();</span><br><span class="line">      &#125;finally&#123;</span><br><span class="line">         if(is!=null)</span><br><span class="line">            is.close();</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="write方法"><a href="#write方法" class="headerlink" title="write方法"></a>write方法</h2><ul>
+<li><p>write(int c)：写入数字，利用 ASCII 码表 或者 Unicode 表转化</p>
+</li>
+<li><p>write(String str)：写入字符串</p>
+</li>
+<li><p>write(char[] cbuf)：写入字符数组</p>
+</li>
+<li><p>write(String str, int off, int len)：写入字符串的一部分</p>
+</li>
+<li><p>write(char[] cbuf,int off,int len)：写入字符数组的一部分</p>
+</li>
+</ul>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[java的多线程]]></title>
+      <url>/2024/07/18/java%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
+      <content type="html"><![CDATA[<h1 id="多线程概述"><a href="#多线程概述" class="headerlink" title="多线程概述"></a>多线程概述</h1><p>多线程是实现并发机制的一种有效手段。进程和线程一样，都是实现并发的一个基本单位。线程是比进程更小的执行单位，线程是在进程的基础上进行的进一步划分。所谓多线程是指一个进程在执行过程中可以产生多个线程，这些线程可以同时存在、同时运行，一个进程可能包含了多个同时执行的线程。</p>
+<h2 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h2><h3 id="进程："><a href="#进程：" class="headerlink" title="进程："></a>进程：</h3><p>正在运行的应用程序：是指一个内存中运行的应用程序，每个进程都有一个独立的内存空间，即每个进程都有着自己的堆、栈等且是互不共享的。</p>
+<h3 id="线程："><a href="#线程：" class="headerlink" title="线程："></a>线程：</h3><p>进程中的一个执行路径（一段程序从执行到结束的整个过程），共享一个内存空间，线程之间可以自由切换，并发执行，一个进程最少有一个线程<br>线程实际上是在进程的基础上进一步划分的，一个进程执行后，里面的若干执行路径又可以划分为若干个线程</p>
+<h2 id="线程调度"><a href="#线程调度" class="headerlink" title="线程调度"></a>线程调度</h2><h3 id="分时调度"><a href="#分时调度" class="headerlink" title="分时调度"></a>分时调度</h3><p>所有线程轮流使用 CPU 的使用权，平均分配每个线程占用 CPU 的时间。</p>
+<h3 id="抢占式调度"><a href="#抢占式调度" class="headerlink" title="抢占式调度"></a>抢占式调度</h3><ul>
+<li>优先让优先级高的线程使用 CPU，如果线程的优先级相同，那么会随机选择一个(线程随机性)，Java使用的为抢占式调度。</li>
+<li>CPU使用抢占式调度模式在多个线程间进行着高速的切换。对于CPU的一个核心而言，某个时刻，只能执行一个线程，而 CPU的在多个线程间切换速度相对我们的感觉很快，看上去就是在同一时刻运行。 其实，多线程程序并不能提高程序的运行速度，但能够提高程序运行效率，让CPU的使用率更高。</li>
+</ul>
+<p><strong>并发</strong>：指两个或多个事件在同一个时间段内发生。</p>
+<p><strong>并行</strong>：指两个或多个事件在同一时刻发生（同时发生）。</p>
+<h2 id="多线程的实现方式"><a href="#多线程的实现方式" class="headerlink" title="多线程的实现方式"></a>多线程的实现方式</h2><h3 id="继承Thread类"><a href="#继承Thread类" class="headerlink" title="继承Thread类"></a>继承Thread类</h3><ol>
+<li>创建一个自定义类并继承Thread类；</li>
+<li>重写run()方法，创建新的执行任务（通过thread对象的start()方法启动任务，一般不直接调用run()方法）</li>
+<li>创建自定义类对象实例，调用start()，让线程执行</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">//MyThread.java</span><br><span class="line">public class MyThread extends Thread&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;			//run()方法就是线程要执行的任务的方法</span><br><span class="line">        for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">            System.out.println(&quot;MyThread&quot; + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//ThreadTest.java</span><br><span class="line">public class ThreadTest &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        MyThread mt = new MyThread();</span><br><span class="line">        mt.start();				//启动线程任务</span><br><span class="line">        for (int i = 0; i &lt; 5; i++) &#123;</span><br><span class="line">            System.out.println(&quot;MainThread&quot; + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[java异常抛出实例]]></title>
       <url>/2024/07/11/java%E5%BC%82%E5%B8%B8%E6%8A%9B%E5%87%BA%E5%AE%9E%E4%BE%8B/</url>
       <content type="html"><![CDATA[<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>自定义异常</p>

@@ -19,22 +19,22 @@
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     
     <meta name="description" content="">
-    <meta name="description" content="实例自定义异常 12345public class my_exception extends Exception &#123;    public void pick()&#123;    System.out.println(&quot;Error: 越界&quot;);    &#125;&#125;    抛出异常类及方法 12345678910111213141516171819publi">
+    <meta name="description" content="四大组件 活动（activity），用于表现功能 服务（service），后台运行服务，不提供界面呈现 广播接受者（Broadcast Receive），勇于接收广播 内容提供者（Content Provider），支持多个应用中存储和读取数据，相当于数据库  活动定义：是用户操作的可视化界面；它为用户提供了一个完成操作指令的窗口。当我们创建完毕Activity之后，需要调用setContentV">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java异常抛出实例">
-<meta property="og:url" content="http://example.com/2024/07/11/java%E5%BC%82%E5%B8%B8%E6%8A%9B%E5%87%BA%E5%AE%9E%E4%BE%8B/index.html">
+<meta property="og:title" content="android的四大组件">
+<meta property="og:url" content="http://example.com/2024/07/21/android%E7%9A%84%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="实例自定义异常 12345public class my_exception extends Exception &#123;    public void pick()&#123;    System.out.println(&quot;Error: 越界&quot;);    &#125;&#125;    抛出异常类及方法 12345678910111213141516171819publi">
+<meta property="og:description" content="四大组件 活动（activity），用于表现功能 服务（service），后台运行服务，不提供界面呈现 广播接受者（Broadcast Receive），勇于接收广播 内容提供者（Content Provider），支持多个应用中存储和读取数据，相当于数据库  活动定义：是用户操作的可视化界面；它为用户提供了一个完成操作指令的窗口。当我们创建完毕Activity之后，需要调用setContentV">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-07-11T09:13:23.000Z">
-<meta property="article:modified_time" content="2024-07-11T09:21:42.966Z">
+<meta property="article:published_time" content="2024-07-21T02:12:15.000Z">
+<meta property="article:modified_time" content="2024-08-04T02:36:20.479Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/ghk.ico">
     
-    <title>java异常抛出实例 · lock&#39;s Studio</title>
+    <title>android的四大组件 · lock&#39;s Studio</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -260,7 +260,7 @@
                 <a href="/">Nothing</a>
             </div>
             <div class="post-title header-element">
-                <a href="#" class="post-name">java异常抛出实例</a>
+                <a href="#" class="post-name">android的四大组件</a>
             </div>
         </div>
     
@@ -306,7 +306,7 @@
         <h1 class="intro-title">
             <!-- 主页  -->
             
-                java异常抛出实例
+                android的四大组件
             <!-- 404 -->
             
         </h1>
@@ -334,7 +334,7 @@
                 <div class="post-intro-meta">
                     <!-- 撰写日期 -->
                     <span class="iconfont-archer post-intro-calander">&#xe676;</span>
-                    <span class="post-intro-time">2024/07/11</span>
+                    <span class="post-intro-time">2024/07/21</span>
                     <!-- busuanzi -->
                     
                         <span id="busuanzi_container_page_pv" class="busuanzi-pv">
@@ -489,81 +489,74 @@
             <div class="container container-unloaded">
                 <main class="main post-page">
     <article class="article-entry">
-        <h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>自定义异常</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class my_exception extends Exception &#123;</span><br><span class="line">    public void pick()&#123;</span><br><span class="line">    System.out.println(&quot;Error: 越界&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>抛出异常类及方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class pointjd &#123;</span><br><span class="line">    private int x=0;</span><br><span class="line">    public void move(char s)throws my_exception&#123;</span><br><span class="line">        if(s == &#x27;a&#x27;)</span><br><span class="line">        &#123;</span><br><span class="line">            x-=1;</span><br><span class="line">            if(x&lt;=-5)</span><br><span class="line">                throw new my_exception();</span><br><span class="line">        &#125;</span><br><span class="line">        else if(s ==&#x27;d&#x27;)</span><br><span class="line">        &#123;</span><br><span class="line">            x+=1;</span><br><span class="line">            if(x&gt;=5)</span><br><span class="line">                throw new my_exception();</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">            System.out.println(&quot;warning!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>主函数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">//TIP To &lt;b&gt;Run&lt;/b&gt; code, press &lt;shortcut actionId=&quot;Run&quot;/&gt; or</span><br><span class="line">// click the &lt;icon src=&quot;AllIcons.Actions.Execute&quot;/&gt; icon in the gutter.</span><br><span class="line">import java.util.Scanner;</span><br><span class="line">public class Main &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">    pointjd p = new pointjd();</span><br><span class="line">    Scanner scanner = new Scanner(System.in);</span><br><span class="line">    for(int i= 0 ;i&lt;9;i++)&#123;</span><br><span class="line">            char mv;</span><br><span class="line">            String MV;</span><br><span class="line">            MV = scanner.next();</span><br><span class="line">            mv=MV.charAt(0);</span><br><span class="line">            try&#123;</span><br><span class="line">                p.move(mv);</span><br><span class="line">            &#125;</span><br><span class="line">            catch(my_exception e)&#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">                e.pick();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    System.out.println(&quot;over&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<ol>
-<li><strong>创建自定义异常类</strong>：<ul>
-<li>声明一个继承自Exception类或RuntimeException类的类。</li>
-<li>根据需要添加构造方法和其他方法。例如，你可以添加一个带有错误消息的构造方法，以便在抛出异常时提供有关异常的详细信息。</li>
-</ul>
-</li>
-<li><strong>在方法适当的位置生成自定义异常的实例，并用throw语句抛出</strong>：<ul>
-<li>当你的代码遇到特定的错误情况时，你可以创建一个自定义异常类的实例，并使用throw语句将其抛出。这将导致程序的控制流跳转到最近的catch块（如果存在的话）。</li>
-</ul>
-</li>
-<li><strong>在方法的声明部分用throws语句声明可能抛出的异常</strong>：<ul>
-<li>如果你的方法可能会抛出异常（无论是自定义异常还是预定义异常），你都应该在方法的声明部分使用throws语句来声明它。这将告诉调用该方法的代码需要处理这个异常，或者它也可以继续向上抛出这个异常。</li>
-</ul>
-</li>
-<li><strong>捕获和处理异常</strong>：<ul>
-<li>在你的代码中，你可以使用try-catch块来捕获和处理异常。在try块中，你放置可能会抛出异常的代码。在catch块中，你处理这些异常。你可以根据异常的类型来决定如何处理它们。例如，如果你捕获到的是你的自定义异常，你可以根据异常中包含的信息来采取适当的行动。</li>
-</ul>
-</li>
+        <h1 id="四大组件"><a href="#四大组件" class="headerlink" title="四大组件"></a>四大组件</h1><ol>
+<li>活动（activity），用于表现功能</li>
+<li>服务（service），后台运行服务，不提供界面呈现</li>
+<li>广播接受者（Broadcast Receive），勇于接收广播</li>
+<li>内容提供者（Content Provider），支持多个应用中存储和读取数据，相当于数据库</li>
 </ol>
-<h2 id="异常的解决方式"><a href="#异常的解决方式" class="headerlink" title="异常的解决方式"></a>异常的解决方式</h2><h3 id="异常声明throws"><a href="#异常声明throws" class="headerlink" title="异常声明throws"></a>异常声明throws</h3><p>​    当方法中抛出编译时异常，用户不想处理该异常，此时就可以借助throws将异常抛给方法的调用者来处理。即当前方法不处理异常，提醒方法的调用者处理异常。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">修饰符 返回值类型 方法名(参数列表) throws 异常类型1，异常类型2...&#123;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public static void divide(int a, int b) throws ArithmeticException &#123;</span><br><span class="line">        if (b == 0) &#123;</span><br><span class="line">            throw new ArithmeticException(&quot;除数不能为0&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        int result = a / b;</span><br><span class="line">        System.out.println(&quot;结果：&quot; + result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="活动"><a href="#活动" class="headerlink" title="活动"></a>活动</h2><p>定义：是用户操作的可视化界面；它为用户提供了一个完成操作指令的窗口。当我们创建完毕Activity之后，需要调用setContentView()方法来完成界面的显示</p>
+<p>一个Activity通常就是一个单独的屏幕</p>
+<p>可以类比为windows开发中的窗口</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public class FirstActivity extends AppCompatActivity &#123;</span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:orientation=&quot;vertical&quot; android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;Button</span><br><span class="line">        android:id=&quot;@+id/button_1&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:text=&quot;Button 1&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/LinearLayout&gt;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
 
-<ol>
-<li><p>throws必须跟在方法的参数列表之后</p>
-</li>
-<li><p>声明的异常必须是 Exception 或者 Exception 的子类</p>
-</li>
-<li><p>方法内部如果抛出了多个异常，throws之后必须跟多个异常类型，之间用逗号隔开，如果抛出多个异常类型具有父子关系，直接声明父类即可。</p>
-</li>
-<li><p>调用声明抛出异常的方法时，调用者必须对该异常进行处理，或者继续使用throws抛出</p>
-</li>
-</ol>
-<h3 id="try-catch-finally语句"><a href="#try-catch-finally语句" class="headerlink" title="try - catch - finally语句"></a>try - catch - finally语句</h3><p>异常可以通过try-catch-finally语句块来进行处理。由于throws对异常并没有真正处理，而是将异常报告给抛出异常方法的调用者，由调用者处理。如果真正要对异常进行处理，就需要try-catch</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">    // 可能抛出异常的代码</span><br><span class="line">&#125; catch (ExceptionType1 e1) &#123;</span><br><span class="line">    // 处理异常类型1的情况</span><br><span class="line">&#125; catch (ExceptionType2 e2) &#123;</span><br><span class="line">    // 处理异常类型2的情况</span><br><span class="line">&#125; finally &#123;</span><br><span class="line">    // 可选的finally语句块，用于执行清理操作</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Actiity生命周期"><a href="#Actiity生命周期" class="headerlink" title="Actiity生命周期"></a>Actiity生命周期</h3><p> 在Android中会维持一个Activity Stack（Activity栈），当一个新的Activity创建时，它就会放到栈顶，这个Activity就处于运行状态。当再有一个新的Activity被创建后，会重新压人栈顶，而之前的Activity则会在这个新的Activity底下，就像枪梭压入子弹一样。而且之前的Activity就会进入后台</p>
+<h3 id="四种状态"><a href="#四种状态" class="headerlink" title="四种状态"></a>四种状态</h3><ul>
+<li>a.运行中(Running&#x2F;Active):这时Activity位于栈顶，可见可交互</li>
+<li>b.暂停(Paused):可见不可交互。当一个新的非全屏的Activity或者一个透明的Activity放置在栈顶，Activity就处于暂停状态；这个时候Activity的各种数据还被保持着；只有在系统内存在极低的状态下，系统才会自动的去销毁Activity。</li>
+<li>c.停止(Stoped):当一个Activity被另一个Activity完全覆盖，或者点击HOME键退入了后台，这时候Activity处于停止状态。这里有些是跟暂停状态相似的：这个时候Activity的各种数据还被保持着；当系统的别的地方需要用到内容时，系统会自动的去销毁Activity。</li>
+<li>d.销毁(Detroyed):点击返回键或者系统在内存不够用的情况下就会把Activity从栈里移除销毁，被系统回收，这时候，Activity处于销毁状态。</li>
+</ul>
+<h2 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h2><p>它通常用作在后台处理耗时的逻辑，与Activity一样，它存在自己的生命周期，也需要在AndroidManifest.xml配置相关信息</p>
+<p>是Android中实现程序后台运行的解决方案，它非常适合去执行那些不需要和用户交互而且还要求长期运行的任务。服务的运行不依赖于任何用户界面，即使程序被切换到后台，或者用户打开了另外一个应用程序，服务仍然能够保持正常运行</p>
+<p>不过需要注意的是，服务并不是运行在一个独立的进程当中的，而是依赖于创建服务时所在的应用程序进程</p>
+<p>类似于c++中的窗口接口函数</p>
+<h3 id="service用于在后台"><a href="#service用于在后台" class="headerlink" title="service用于在后台"></a>service用于在后台</h3><ul>
+<li>started（启动）：当应用程序组件（如activity）调用startService()方法启动服务时，服务处于started状态。</li>
+<li>bound（绑定）：当应用程序组件调用bindService()方法绑定到服务时，服务处于bound状态。</li>
+</ul>
+<h3 id="startService"><a href="#startService" class="headerlink" title="startService()"></a>startService()</h3><p>started service（启动服务）是由其他组件调用startService()方法启动的，其生命周期与启动它的组件无关，并且可以在后台无限期运行，即使启动服务的组件已经被销毁。因此，服务需要在完成任务后调用stopSelf()方法停止，或者由其他组件调用stopService()方法停止</p>
+<h3 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">public class TestOneService extends Service&#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onCreate() &#123;</span><br><span class="line">        Log.i(&quot;Kathy&quot;,&quot;onCreate - Thread ID = &quot; + Thread.currentThread().getId());</span><br><span class="line">        super.onCreate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int onStartCommand(Intent intent, int flags, int startId) &#123;</span><br><span class="line">        Log.i(&quot;Kathy&quot;, &quot;onStartCommand - startId = &quot; + startId + &quot;, Thread ID = &quot; + Thread.currentThread().getId());</span><br><span class="line">        return super.onStartCommand(intent, flags, startId);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Nullable</span><br><span class="line">    @Override</span><br><span class="line">    public IBinder onBind(Intent intent) &#123;</span><br><span class="line">        Log.i(&quot;Kathy&quot;, &quot;onBind - Thread ID = &quot; + Thread.currentThread().getId());</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onDestroy() &#123;</span><br><span class="line">        Log.i(&quot;Kathy&quot;, &quot;onDestroy - Thread ID = &quot; + Thread.currentThread().getId());</span><br><span class="line">        super.onDestroy();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public class MainActivity extends AppCompatActivity &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        Log.i(&quot;Kathy&quot;, &quot;Thread ID = &quot; + Thread.currentThread().getId());</span><br><span class="line">        Log.i(&quot;Kathy&quot;, &quot;before StartService&quot;);</span><br><span class="line"></span><br><span class="line">        //连续启动Service</span><br><span class="line">        Intent intentOne = new Intent(this, TestOneService.class);</span><br><span class="line">        startService(intentOne);</span><br><span class="line">        Intent intentTwo = new Intent(this, TestOneService.class)</span><br><span class="line">        //停止Service</span><br><span class="line">        Intent intentFour = new Intent(this, TestOneService.class);</span><br><span class="line">        stopService(intentFour);</span><br><span class="line"></span><br><span class="line">        //再次启动Service</span><br><span class="line">        Intent intentFive = new Intent(this, TestOneService.class);</span><br><span class="line">        startService(intentFive);</span><br><span class="line"></span><br><span class="line">        Log.i(&quot;Kathy&quot;, &quot;after StartService&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
 
 
-<p>finally语句块是可选的，用于执行清理操作，无论是否发生异常都会执行。finally语句块通常用于释放资源或执行必要的收尾工作，例如关闭文件或数据库连接。</p>
-<ol>
-<li>try块内抛出异常位置之后的代码将不会被执行</li>
-<li>如果抛出异常类型与catch时异常类型不匹配，即异常不会被成功捕获，也就不会被处理，继续往外抛，直到JVM收到后中断程序—-异常是按照类型来捕获的**</li>
-<li>try中可能会抛出多个不同的异常对象，则必须用多个catch来捕获—-即多种异常，多次捕获</li>
-<li>如果多个异常的处理方式是完全相同，我们可以使用“ | ”隔开</li>
-<li>如果异常之间具有父子关系，一定是子类异常在前catch，父类异常在后catch，否则语法错误</li>
-</ol>
-<h2 id="异常分类"><a href="#异常分类" class="headerlink" title="异常分类"></a>异常分类</h2><h3 id="检查性异常："><a href="#检查性异常：" class="headerlink" title="检查性异常："></a>检查性异常：</h3><p>最具代表的检查性异常是用户错误或问题引起的异常，这些异常在编译时强制要求程序员处理。例如要打开一个不存在文件时，一个异常就发生了，这些异常在编译时不能被简单地忽略。</p>
-<h3 id="运行时异常（非检查性异常）："><a href="#运行时异常（非检查性异常）：" class="headerlink" title="运行时异常（非检查性异常）："></a>运行时异常（非检查性异常）：</h3><p>这些异常在编译时不强制要求处理，通常是由程序中的错误引起的，例如 NullPointerException、ArrayIndexOutOfBoundsException 等，这类异常可以选择处理，但并非强制要求</p>
+<h2 id="广播接受器"><a href="#广播接受器" class="headerlink" title="广播接受器"></a>广播接受器</h2><p>广播接收器是对发送出来的广播进行过滤接受并响应的一类组件。可以使用广播接收器来让应用对一个外部时间做出响应，广播接收器通过NotificationManager方法来通知用户这些事情发生了。广播接收器既可以在AndroidManifest.xml中注册，也可以在运行时的代码中使用</p>
+<p>广播接收器没有用户界面。然而，它们可以启动一个activity或serice来响应它们收到的信息，或者用NotificationManager来通知用户。通知可以用很多种方式来吸引用户的注意力，例如闪动背灯、震动、播放声音等。一般来说是在状态栏上放一个持久的图标，用户可以打开它并获取消息。</p>
+<p>注册有两种方法，分别是程序动态注册【在运行时的代码中使用Context.registerReceive（）进行注册】和AndroidManifest文件中进行静态注册</p>
+<p>类似于windows中的消息接受处理函数</p>
+<h3 id="使用-2"><a href="#使用-2" class="headerlink" title="使用"></a>使用</h3><p>创建一个广播接收器BroadcastReceiver ，广播也是通过Intent来传递数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class MyReceiver extends BroadcastReceiver &#123;</span><br><span class="line">    private static final String TAG = &quot;MyReceiver&quot;;</span><br><span class="line">    @Override</span><br><span class="line">    public void onReceive(Context context, Intent intent) &#123;</span><br><span class="line">        String msg=intent.getStringExtra(&quot;msg&quot;);</span><br><span class="line">        Log.e(TAG, &quot;onReceive: &quot;+msg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>清单文件注册该广播</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">application</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:allowBackup</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:icon</span>=<span class="string">&quot;@mipmap/ic_launcher&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:label</span>=<span class="string">&quot;@string/app_name&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:supportsRtl</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:theme</span>=<span class="string">&quot;@style/Theme.MyApplication&quot;</span>&gt;</span></span><br><span class="line"> </span><br><span class="line">	<span class="tag">&lt;<span class="name">receiver</span> <span class="attr">android:name</span>=<span class="string">&quot;.receiver.MyReceiver&quot;</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:exported</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">	</span><br><span class="line"><span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在其它组件里面发送广播，比如Activity里面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">private void Acitivity()&#123;</span><br><span class="line">	Intent intent = new Intent(this, MyReceiver.class);</span><br><span class="line">	sendBroadcast(intent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="内容提供器"><a href="#内容提供器" class="headerlink" title="内容提供器"></a>内容提供器</h2><p>给多个应用提供数据，例，APP A的数据库内容不可被APP B进行读取的，此时，一个内容提供者，可以将APP A中的数据信息提供给APP B</p>
+<ul>
+<li>获取通讯录中的<code>联系人</code>，申请好友。</li>
+<li>获取其他软件<code>搜索记录</code>，大数据计算，进行产品推送。</li>
+<li>预约直播，将<code>预约信息</code>写入手机备忘</li>
+</ul>
+<p>这一组件暂时不做过多记录</p>
 
     </article>
     <!-- license -->
     
         <div class="license-wrapper">
             <p>Author：<a href="http://example.com">John Doe</a>
-            <p>Link：<a href="http://example.com/2024/07/11/java%E5%BC%82%E5%B8%B8%E6%8A%9B%E5%87%BA%E5%AE%9E%E4%BE%8B/">http://example.com/2024/07/11/java%E5%BC%82%E5%B8%B8%E6%8A%9B%E5%87%BA%E5%AE%9E%E4%BE%8B/</a>
-            <p>Publish date：<a href="http://example.com/2024/07/11/java%E5%BC%82%E5%B8%B8%E6%8A%9B%E5%87%BA%E5%AE%9E%E4%BE%8B/">July 11th 2024, 5:13:23 pm</a>
-            <p>Update date：<a href="http://example.com/2024/07/11/java%E5%BC%82%E5%B8%B8%E6%8A%9B%E5%87%BA%E5%AE%9E%E4%BE%8B/">July 11th 2024, 5:21:42 pm</a>
+            <p>Link：<a href="http://example.com/2024/07/21/android%E7%9A%84%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/">http://example.com/2024/07/21/android%E7%9A%84%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/</a>
+            <p>Publish date：<a href="http://example.com/2024/07/21/android%E7%9A%84%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/">July 21st 2024, 10:12:15 am</a>
+            <p>Update date：<a href="http://example.com/2024/07/21/android%E7%9A%84%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/">August 4th 2024, 10:36:20 am</a>
             <p>License：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -572,12 +565,17 @@
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href="/2024/07/18/java%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="java的多线程">
-                    <div class="nextTitle">java的多线程</div>
+                <a href="/2024/07/29/android%E8%AF%BB%E5%85%A5sd%E5%8D%A1/" title="android读入sd卡">
+                    <div class="nextTitle">android读入sd卡</div>
                 </a>
             
         </li>
         <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2024/07/18/java%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/" title="java输入输出">
+                    <div class="prevTitle">java输入输出</div>
+                </a>
             
         </li>
     </ul>
@@ -723,7 +721,7 @@
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B"><span class="toc-number">1.</span> <span class="toc-text">实例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">异常的解决方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%A3%B0%E6%98%8Ethrows"><span class="toc-number">2.1.</span> <span class="toc-text">异常声明throws</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#try-catch-finally%E8%AF%AD%E5%8F%A5"><span class="toc-number">2.2.</span> <span class="toc-text">try - catch - finally语句</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%88%86%E7%B1%BB"><span class="toc-number">3.</span> <span class="toc-text">异常分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5%E6%80%A7%E5%BC%82%E5%B8%B8%EF%BC%9A"><span class="toc-number">3.1.</span> <span class="toc-text">检查性异常：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BC%82%E5%B8%B8%EF%BC%88%E9%9D%9E%E6%A3%80%E6%9F%A5%E6%80%A7%E5%BC%82%E5%B8%B8%EF%BC%89%EF%BC%9A"><span class="toc-number">3.2.</span> <span class="toc-text">运行时异常（非检查性异常）：</span></a></li></ol></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">四大组件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B4%BB%E5%8A%A8"><span class="toc-number">1.1.</span> <span class="toc-text">活动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">1.1.1.</span> <span class="toc-text">使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Actiity%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.1.2.</span> <span class="toc-text">Actiity生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E7%A7%8D%E7%8A%B6%E6%80%81"><span class="toc-number">1.1.3.</span> <span class="toc-text">四种状态</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.2.</span> <span class="toc-text">服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#service%E7%94%A8%E4%BA%8E%E5%9C%A8%E5%90%8E%E5%8F%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">service用于在后台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#startService"><span class="toc-number">1.2.2.</span> <span class="toc-text">startService()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-1"><span class="toc-number">1.2.3.</span> <span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BF%E6%92%AD%E6%8E%A5%E5%8F%97%E5%99%A8"><span class="toc-number">1.3.</span> <span class="toc-text">广播接受器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-2"><span class="toc-number">1.3.1.</span> <span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E6%8F%90%E4%BE%9B%E5%99%A8"><span class="toc-number">1.4.</span> <span class="toc-text">内容提供器</span></a></li></ol></li></ol>
             </div>
         
         <!-- sidebar -->
