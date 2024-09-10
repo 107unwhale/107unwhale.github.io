@@ -6,23 +6,23 @@
       <title><![CDATA[android killer使用基础]]></title>
       <url>/2024/09/01/android-killer%E4%BD%BF%E7%94%A8%E5%9F%BA%E7%A1%80/</url>
       <content type="html"><![CDATA[<h1 id="AndroidKiller"><a href="#AndroidKiller" class="headerlink" title="AndroidKiller"></a>AndroidKiller</h1><p>AndroidKiller是一可视化的Android反编译工具，集合了多款安卓反编译软件，只要有配置jdk环境，AndroidKiller的安装十分常规</p>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="基础页面"><a href="#基础页面" class="headerlink" title="基础页面"></a>基础页面</h3><p>![屏幕截图 174312](.&#x2F;assets&#x2F;屏幕截图 174312.png)</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="基础页面"><a href="#基础页面" class="headerlink" title="基础页面"></a>基础页面</h3><p><img src="/./assets/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE173831.png" alt="屏幕截图173831"></p>
 <p>在左侧，工程信息位置，展示名称、包名、入口；右侧日志输出，展示</p>
 <h3 id="更改apk的安装包名"><a href="#更改apk的安装包名" class="headerlink" title="更改apk的安装包名"></a>更改apk的安装包名</h3><p>下好一个apk安装包，这里选用土豆视频为例子</p>
 <p>打开AndroidKiller.exe程序，把下好的apk包拉入程序中，程序会自动编译apk，中途出现分析工程提示不用管直接点击否，编译的结果如下</p>
-<p>![屏幕截图 174312](.&#x2F;assets&#x2F;屏幕截图 174312-1725961513461-2.png)</p>
+<p>![屏幕截图 174312](.&#x2F;assets&#x2F;屏幕截图 174312-1725985509168-4.png)</p>
 <p>修改apk安装包名重新编译，具体如下图所示，所有的操作都要等待控制台的提示再判断是否做下一步操作：</p>
-<p>![屏幕截图 174641](.&#x2F;assets&#x2F;屏幕截图 174641.png)</p>
+<p>![屏幕截图 174641](.&#x2F;assets&#x2F;屏幕截图 174641-1725985520246-6.png)</p>
 <p>把编译之后的apk安装包拉到模拟器上进行安装</p>
-<p><img src="/./assets/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE174857.png" alt="屏幕截图174857"></p>
+<p><img src="/./assets/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE174857-1725985526519-8.png" alt="屏幕截图174857"></p>
 <h3 id="更换apk的图标"><a href="#更换apk的图标" class="headerlink" title="更换apk的图标"></a>更换apk的图标</h3><p>通过MANIFEST.MF全局搜索资源，找到图标</p>
-<p><img src="/./assets/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE175148.png" alt="屏幕截图175148"></p>
+<p><img src="/./assets/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE175148-1725985535489-10.png" alt="屏幕截图175148"></p>
 <p>根据找到的所有图标路径（\AndroidKiller_v1.3.1\projects\土豆视频_v5.7_apkpure.com\Project\res），都替换成自己的图标（一个应用会拥有多个图标，这是因为一款APP在每个手机上的分辨率都是不同的，所以要多个图标来兼容手机的分辨率）</p>
 <p>进行编译，并再次放入模拟器测试</p>
 <h3 id="去除广告"><a href="#去除广告" class="headerlink" title="去除广告"></a>去除广告</h3><p>在apk项目中打开AnddroidManifest.xml配置清单文件（首先明确一个概念，广告都是通过网络加载出来的），删除跟网络有关的标签，如下所示常见的一些网络信息标签，最后一个INTERNET保留。</p>
-<p><img src="/./assets/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE175608.png" alt="屏幕截图175608"></p>
+<p><img src="/./assets/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE175608-1725985543584-12.png" alt="屏幕截图175608"></p>
 <p>解决了弹框广告，接下来是首页广告，首页广告一般是app的入口是广告活动页面，只要改成当前活动页面就可以了，而拥有了以下的两个标签和属性值才会被识别为app入口页面</p>
-<p><img src="/./assets/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE175723.png" alt="屏幕截图175723"></p>
+<p><img src="/./assets/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE175723-1725985552720-14-1725985570323-16.png" alt="屏幕截图175723"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;</span><br><span class="line">&lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 ]]></content>
@@ -36,9 +36,9 @@
       <content type="html"><![CDATA[<h1 id="apk文件结构"><a href="#apk文件结构" class="headerlink" title="apk文件结构"></a>apk文件结构</h1><h2 id="APK-文件"><a href="#APK-文件" class="headerlink" title="APK 文件"></a>APK 文件</h2><p>APK (Android application package) ，是应用程序的压缩包形式，将应用程序的原代码、各类资源和清单信息组合在一起，以便在设备上进行安装和运行</p>
 <p>接下以ibilibili安装包为例观察其文件结构</p>
 <p>下载apk文件</p>
-<p><img src="/./assets/1.png" alt="1"></p>
+<p><img src="/./apk%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/1.png" alt="1"></p>
 <p>因为其本质上就是一个 zip压缩包。所以直接用win解压解压文件</p>
-<p><img src="/./assets/2.png" alt="2"></p>
+<p><img src="/./apk%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/2.png" alt="2"></p>
 <p>如图，文件内部可分为</p>
 <ul>
 <li>静态资源文件（assets）</li>
@@ -50,7 +50,7 @@
 <li>资源映射文件（resources.arsc）</li>
 </ul>
 <h3 id="静态资源文件（assets）"><a href="#静态资源文件（assets）" class="headerlink" title="静态资源文件（assets）"></a>静态资源文件（assets）</h3><p>静态资源文件是一种未经编译的资源目录，它会被打包进 APK 文件中，在安装应用程序之后可以被访问，用于存放应用程序的原始静态文件，如音频文件、视频文件、HTML文件等</p>
-<p><img src="/./assets/3.png" alt="3"></p>
+<p><img src="/./apk%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/3.png" alt="3"></p>
 <h3 id="库文件（lib）"><a href="#库文件（lib）" class="headerlink" title="库文件（lib）"></a>库文件（lib）</h3><p>用于存放动态及静态链接库的文件夹</p>
 <h3 id="签名文件（META-INF）"><a href="#签名文件（META-INF）" class="headerlink" title="签名文件（META-INF）"></a>签名文件（META-INF）</h3><p>其中包含MANIFEST.MF、CERT.SF和CERT.RSA文件，MANIFEST.MF文件包含了文件的SHA1摘要值，CERT.SF和CERT.RSA文件为生成的签名文件和签名块文件，应用程序管理器安装apk文件的过程中会检查证书，对比每个文件的摘要值是否匹配，防止应用程序被篡改</p>
 <h4 id="文件签名"><a href="#文件签名" class="headerlink" title="文件签名"></a>文件签名</h4><ul>
@@ -66,10 +66,10 @@
 <li>图像文件包含了应用程序使用的图标、背景图等图像资源。</li>
 <li>字符串资源存储了应用程序中使用的文本字符串</li>
 </ul>
-<p><img src="/./assets/4.png" alt="4"></p>
+<p><img src="/./apk%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/4.png" alt="4"></p>
 <h3 id="配置清单文件（AndroidManifest-xml）"><a href="#配置清单文件（AndroidManifest-xml）" class="headerlink" title="配置清单文件（AndroidManifest.xml）"></a>配置清单文件（AndroidManifest.xml）</h3><p>每个应用程序都必须定义和包含的全局配置文件，它描述了应用程序的名称、版本、权限、引用的库文件等信息,其特殊点在于AndroidManifest.xml是经过压缩的，如果直接打开将看到乱码。可以通过相关工具将其解压。</p>
 <h3 id="classes-dex"><a href="#classes-dex" class="headerlink" title="classes.dex"></a>classes.dex</h3><p>java编译产生class文件，class文件被DX工具转换成一个dex文件，以便在Dalvik虚拟机运行，classes.dex是Java源代码编译后生成的Dalvik虚拟机字节码文件，类似于Java虚拟机使用的．class类文件，将class文件整合到一起，可以减小类文件的尺寸、IO操作，提高类的查找速度，常规来说每个APK文件只有一个classes.dex文件，但一个dex文件储存空间有限（66535），超出的会创建一个新的class.dex文件</p>
-<p><img src="/./assets/5.png" alt="5"></p>
+<p><img src="/./apk%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/5.png" alt="5"></p>
 <h3 id="资源映射文件（resources-arsc）"><a href="#资源映射文件（resources-arsc）" class="headerlink" title="资源映射文件（resources.arsc）"></a>资源映射文件（resources.arsc）</h3><p>一个二进制文件，包含了使用的所有资源索引信息</p>
 ]]></content>
       
