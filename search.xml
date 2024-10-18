@@ -3,6 +3,53 @@
   
     
     <entry>
+      <title><![CDATA[Android布局]]></title>
+      <url>/2024/10/01/Android%E5%B8%83%E5%B1%80/</url>
+      <content type="html"><![CDATA[<h1 id="布局格式"><a href="#布局格式" class="headerlink" title="布局格式"></a>布局格式</h1><h2 id="线性布局LinearLayout"><a href="#线性布局LinearLayout" class="headerlink" title="线性布局LinearLayout"></a>线性布局LinearLayout</h2><p><code>线性布局（LinearLayout）</code>主要以水平或垂直方式来排列界面中的控件。并将控件排列到一条直线上。在线性布局中，如果水平排列，垂直方向上只能放一个控件，如果垂直排列，水平方向上也只能方一个控件。</p>
+<p>使用线性布局，需要将布局节点改成<code>LinearLayout</code>，基本格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;</span><br><span class="line">    xmlns:tools=&quot;http://schemas.android.com/tools&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot;</span><br><span class="line">    tools:context=&quot;.MainActivity&quot;&gt;</span><br><span class="line"> ....</span><br><span class="line">    </span><br><span class="line">&lt;/LinearLayout&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="LinearLayout常用属性"><a href="#LinearLayout常用属性" class="headerlink" title="LinearLayout常用属性"></a>LinearLayout常用属性</h3><p>orientation</p>
+<p>在线性布局中，控件排列有水平和垂直两个方向，控件排列方向由<code>android:orientation</code>属性来控制，该属性需要加在<code>LinearLayout</code>标记的属性中。将<code>orientation</code>属性值设置成为<code>horizontal</code>，控件将从水平方向<code>从左往右</code>排列，将<code>orientation</code>属性值设置成为<code>vertical</code>控件将从垂直方向<code>从上往下</code>排列。</p>
+<p>gravity属性</p>
+<p>线性布局的控件默认是<code>从左往右</code>排列或<code>从上往下</code>排列，如果想让线性布局中的控件排列对齐右边缘或者底部，可以用<code>gravity</code>属性控制。不过该属性值并不是只有在<code>LinearLayout</code>中才能使用，其他的布局用该属性同样能生效。</p>
+<p>layout_weight属性</p>
+<p>LinearLayout中另外一个常用的属性是<code>layout_weight</code>，该属性需要加在<code>LinearLayout</code>的子控件中。其作用是分配线性布局中的剩余空间到该控件上。</p>
+<p>如下图所示，在控件没有添加<code>layout_weight</code>属性时，控件未占满线性布局的区域会空出来。</p>
+<p>layout_margin属性</p>
+<p>margIn属性设置当前控件与上级控件之间的间距，及子控件与父控件之间的距离，通常使用bp等单位标注具体间隔</p>
+<p>padding属性</p>
+<p>相应的，padding属性用于设置当前控件与同级控件之间的间距，用法与margin属性用法类似</p>
+<h2 id="相对布局RelativeLayout"><a href="#相对布局RelativeLayout" class="headerlink" title="相对布局RelativeLayout"></a><strong>相对布局RelativeLayout</strong></h2><p>相对布局(重点)：相对布局是通过相对定位的方式让控件出现在布局任意位置； </p>
+<p>在相对布局中如果不指定控件摆放的位置，那么控件都会被默认放在RelativeLayout的左上角。因此要先指定第一个控件的位置，再根据一个控件去给其他控件布局。</p>
+<h3 id="RelativeLayout常见属性"><a href="#RelativeLayout常见属性" class="headerlink" title="RelativeLayout常见属性"></a>RelativeLayout常见属性</h3><p><strong>相对于父元素给控件布局</strong><br>  android:layout_centerHrizontal 水平居中<br>  android:layout_centerVertical 垂直居中<br>  android:layout_centerInparent  相对于父元素完全居中<br>  android:layout_alignParentBottom 位于父元素的下边缘<br>  android:layout_alignParentLeft  位于父元素的左边缘<br>  android:layout_alignParentRight 位于父元素的右边缘<br>  android:layout_alignParentTop  位于父元素的上边缘<br>  android:layout_alignWithParentIfMissing 如果对应的兄弟元素找不到的话就以父元素做参照物 </p>
+<p><strong>属性值必须为id的引用名“@id&#x2F;id-name”</strong><br>  android:layout_below   位于元素的下方<br>  android:layout_above   位于元素的的上方<br>  android:layout_toLeftOf  位于元素的左边<br>  android:layout_toRightOf 位于元素的右边 </p>
+<p>  android:layout_alignTop  该元素的上边缘和某元素的的上边缘对齐<br>  android:layout_alignLeft 该元素的左边缘和某元素的的左边缘对齐<br>  android:layout_alignBottom 该元素的下边缘和某元素的的下边缘对齐<br>  android:layout_alignRight 该元素的右边缘和某元素的的右边缘对齐 </p>
+<p> <strong>给属性赋予像素值</strong><br>  android:layout_marginBottom   底边缘的距离<br>  android:layout_marginLeft      左边缘的距离<br>  android:layout_marginRight     右边缘的距离<br>  android:layout_marginTop      上边缘的距离</p>
+<h2 id="网格布局GridLayout"><a href="#网格布局GridLayout" class="headerlink" title="网格布局GridLayout"></a>网格布局GridLayout</h2><p>设置多个网格形式的空间布局，一般以从左往右，从上到下的顺序按先后顺序放置控件</p>
+<h3 id="GridLayout常用属性"><a href="#GridLayout常用属性" class="headerlink" title="GridLayout常用属性"></a>GridLayout常用属性</h3><p>​    <strong>rowCount ：行</strong></p>
+<p>​     <strong>columnCount<em>：列</em></strong></p>
+<p>设置该网格由几行几列构成</p>
+<p>如都设置为2，则该布局为一个两行两列的网格，共可放置四个控件</p>
+<p><strong>Space</strong>标签的作用：挡住控件，让其不超出网格的范围</p>
+<p>​    <Space android:layout_width="wrap_content" 	    android:layout_height="wrap_content"/></p>
+<p>可以防止控件长宽的跨界</p>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[android开发练习]]></title>
+      <url>/2024/09/19/android%E5%BC%80%E5%8F%91%E7%BB%83%E4%B9%A0/</url>
+      <content type="html"></content>
+      
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[android killer使用基础]]></title>
       <url>/2024/09/01/android-killer%E4%BD%BF%E7%94%A8%E5%9F%BA%E7%A1%80/</url>
       <content type="html"><![CDATA[<h1 id="AndroidKiller"><a href="#AndroidKiller" class="headerlink" title="AndroidKiller"></a>AndroidKiller</h1><p>AndroidKiller是一可视化的Android反编译工具，集合了多款安卓反编译软件，只要有配置jdk环境，AndroidKiller的安装十分常规</p>
@@ -36,7 +83,7 @@
       <content type="html"><![CDATA[<h1 id="apk文件结构"><a href="#apk文件结构" class="headerlink" title="apk文件结构"></a>apk文件结构</h1><h2 id="APK-文件"><a href="#APK-文件" class="headerlink" title="APK 文件"></a>APK 文件</h2><p>APK (Android application package) ，是应用程序的压缩包形式，将应用程序的原代码、各类资源和清单信息组合在一起，以便在设备上进行安装和运行</p>
 <p>接下以ibilibili安装包为例观察其文件结构</p>
 <p>下载apk文件</p>
-<p><img src="/./apk%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/1.png" alt="1"></p>
+<p><img src="/./assets/1.png" alt="1"></p>
 <p>因为其本质上就是一个 zip压缩包。所以直接用win解压解压文件</p>
 <p><img src="/./apk%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/2.png" alt="2"></p>
 <p>如图，文件内部可分为</p>
