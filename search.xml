@@ -3,6 +3,239 @@
   
     
     <entry>
+      <title><![CDATA[smali入门语法]]></title>
+      <url>/2024/10/14/smali%E5%85%A5%E9%97%A8%E8%AF%AD%E6%B3%95/</url>
+      <content type="html"><![CDATA[<h1 id="Smali是什么"><a href="#Smali是什么" class="headerlink" title="Smali是什么"></a>Smali是什么</h1><p>Smali是Android虚拟机的反汇编语言。Android虚拟机的可执行文件并不是普通的class文件，而是再重新整合打包后生成的dex文件。dex文件反编译之后就是Smali代码，所以说，Smali语言是Android虚拟机的反汇编语言。<br>动态调试APK，通常静态分析APK是不够的，如果需要彻底分析APK的执行逻辑，需要通过动态调试来进行。<br>修改APK运行逻辑，通过修改Smali代码，再重新编译打包成新的APK，是Android逆向的基本操作。<br>Smali基本语法</p>
+<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><table>
+<thead>
+<tr>
+<th>Smali(方法类型)</th>
+<th>代码</th>
+<th>Java</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>V</td>
+<td>return-void</td>
+<td>void</td>
+<td>只能用于返回值类型</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>const&#x2F;4 v0,0x1</td>
+<td>boolean</td>
+<td>布尔值类型，判断逻辑</td>
+</tr>
+<tr>
+<td>Ljava&#x2F;lang&#x2F;String;</td>
+<td>const-string v0,”字符串”</td>
+<td>String</td>
+<td>字符串类型</td>
+</tr>
+<tr>
+<td>I</td>
+<td>const&#x2F;4 v0,0x1</td>
+<td>int</td>
+<td>整数类型</td>
+</tr>
+<tr>
+<td><em><strong>*Lpackage&#x2F;name;*</strong></em></td>
+<td>Lpackage&#x2F;name;</td>
+<td>对象类型</td>
+<td>L表示这是一个对象类型，package表示该对象所在的包，; 表示对象名称的结束</td>
+</tr>
+<tr>
+<td>S</td>
+<td>const&#x2F;16 v0, 0x64</td>
+<td>short</td>
+<td>短整数类型</td>
+</tr>
+<tr>
+<td>J</td>
+<td>const-wide&#x2F;32 v0, 0x186a0</td>
+<td>long</td>
+<td>长整数类型</td>
+</tr>
+<tr>
+<td>F</td>
+<td>const&#x2F;high16 v0, 0x42c80000</td>
+<td>float</td>
+<td>浮点数类型</td>
+</tr>
+<tr>
+<td>D</td>
+<td>const-wide&#x2F;high16 v0, 0x4059000000000000L</td>
+<td>double</td>
+<td>双浮点数类型</td>
+</tr>
+<tr>
+<td>C</td>
+<td>const&#x2F;16 v0, 0x61</td>
+<td>char</td>
+<td>字符类型</td>
+</tr>
+<tr>
+<td>B</td>
+<td>const&#x2F;4 v0, 0x1</td>
+<td>byte</td>
+<td>字节类型</td>
+</tr>
+<tr>
+<td>[类型</td>
+<td>[类型</td>
+<td>数组</td>
+<td>[l表示一个int型数据，[Ljava&#x2F;lang&#x2F;String 表示一个String的对象数组</td>
+</tr>
+</tbody></table>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="语法关键词"><a href="#语法关键词" class="headerlink" title="语法关键词"></a>语法关键词</h3><p>.class</p>
+<p>定义java类名</p>
+<p>.super</p>
+<p>定义父类名</p>
+<p>.source</p>
+<p>定义Java源文件名</p>
+<p>.filed</p>
+<p>定义字段</p>
+<p>.method</p>
+<p>定义方法开始</p>
+<p>.end method</p>
+<p>定义方法结束</p>
+<p>.annotation</p>
+<p>定义注解开始</p>
+<p>.end annotation</p>
+<p>定义注解结束</p>
+<p>.implements</p>
+<p>定义接口指令</p>
+<p>.local</p>
+<p>指定了方法内局部变量的个数</p>
+<p>.registers</p>
+<p>指定方法内使用寄存器的总数</p>
+<p>.prologue</p>
+<p>表示方法中代码的开始处</p>
+<p>.line</p>
+<p>表示java源文件中指定行</p>
+<p>.paramter</p>
+<p>指定了方法的参数</p>
+<p>.param</p>
+<p>和.paramter含义一致但是表达格式不同</p>
+<p>L表示这是一个对象类型，package表示该对象所在的包，; 表示对象名称的结束</p>
+<h3 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h3><p>Java中变量都是存放在内存中的，Android为了提高性能，变量都是存放在寄存器中的，寄存器为32位，可以支持任何类型。</p>
+<p>寄存器分为如下两类：<br>1、本地寄存器<br>用v开头数字结尾的符号来表示，v0, v1, v2,…<br>2、参数寄存器<br>用p开头数字结尾的符号来表示，p0,p1,p2,…<br>注意：<br>在非static方法中，p0代指this，p1为方法的第一个参数。<br>在static方法中，p0为方法的第一个参数。</p>
+<p>Smali代码示例</p>
+<p>const&#x2F;4 v0, 0x1 &#x2F;&#x2F;把值0x1存到v0本地寄存器</p>
+<p>iput-boolean v0,p0,Lcom&#x2F;aaa;-&gt;IsRegisterd:Z &#x2F;&#x2F;把v0中的值赋给com.aaa.IsRegistered，p0代表this，相当于this.Isregistered&#x3D;true</p>
+<h3 id="-1"><a href="#-1" class="headerlink" title=""></a></h3><h3 id="成员变量"><a href="#成员变量" class="headerlink" title="成员变量"></a>成员变量</h3><p>成员变量定义格式为：<br>.field public&#x2F;private [static][final] varName:&lt;类型&gt;</p>
+<p>获取指令<br>iget, sget, iget-boolean, sget-boolean, iget-object, sget-object</p>
+<p>操作指令<br>iput, sput, iput-boolean, sput-boolean, iput-object, sput-object<br>array的操作是aget和aput</p>
+<p>指令解析<br>sget-object v0,Lcom&#x2F;aaa;-&gt;ID:Ljava&#x2F;lang&#x2F;String;<br>获取ID这个String类型的成员变量并放到v0这个寄存器中<br>iget-object v0,p0,Lcom&#x2F;aaa;-&gt;view:Lcom&#x2F;aaa&#x2F;view;<br>iget-object比sget-object多一个参数p0，这个参数代表变量所在类的实例。这里p0就是this</p>
+<h3 id="Smali代码示例1："><a href="#Smali代码示例1：" class="headerlink" title="Smali代码示例1："></a>Smali代码示例1：</h3><p>const&#x2F;4 v3, 0x0</p>
+<p>sput-object v3, Lcom&#x2F;aaa;-&gt;timer:Lcom&#x2F;aaa&#x2F;timer;</p>
+<p>相当于java代码：this.timer &#x3D; null;</p>
+<p>Smali代码示例2：</p>
+<p>.local v0, args:Landroid&#x2F;os&#x2F;Message;</p>
+<p>const&#x2F;4 v1, 0x12</p>
+<p>iput v1,v0,Landroid&#x2F;os&#x2F;Message;-&gt;what:I</p>
+<p>相当于java代码：args.what &#x3D; 18;<br>其中args为Message的实例</p>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>函数定义格式为：<br>.method public&#x2F;private [static][final] methodName()&lt;类型&gt;<br>.end method</p>
+<p>Smali代码示例</p>
+<p>.method private ifRegistered()Z</p>
+<pre><code>.locals 2            // 本地寄存器的个数
+
+.prologue
+
+const/4 v0, 0x1      //v0赋值为1
+
+if-eqz v0, :cond_0   //判断v0是否等于0，等于0则跳到cond_0执行
+
+const/4 v1, 0x1      //符合条件分支
+
+:goto_0              //标签
+
+return v1            //返回v1的值
+
+:cond_0              //标签
+
+const/4 v1, 0x0      //cond_0分支
+
+goto :goto_0         //跳到goto_0执行
+</code></pre>
+<p>.end method</p>
+<p>函数分为两类：direct method和virtual method<br>direct method就是private方法，virtual method就是指其余的方法。</p>
+<p>调用指令：<br>invoke-direct<br>invoke-virtual<br>invoke-static<br>invoke-super<br>invoke-interface</p>
+<p>调用格式：<br>invoke-指令类型 {参数1, 参数2,…}, L类名;-&gt;方法名<br>如果不是是静态方法，参数1代表调用该方法的实例。</p>
+<p>Smali代码示例：</p>
+<p>const-string v0, “NDKLIB”</p>
+<p>invoke-static {v0}, Ljava&#x2F;lang&#x2F;System;-&gt;loadLibrary(Ljava&#x2F;lang&#x2F;String;)V</p>
+<p>相当于java代码：System.loadLibrary(“NDKLIB”)</p>
+<p>函数返回结果<br>Smali需要用指令move-result或move-result-object来保存函数返回的结果</p>
+<p>Smali代码示例：</p>
+<p>const-string v0, “Eric”</p>
+<p>invoke-static {v0}, Lcmb&#x2F;pbi;-&gt;t(Ljava&#x2F;lang&#x2F;String;)Ljava&#x2F;lang&#x2F;String;</p>
+<p>move-result-object v2</p>
+<p>表示将方法t返回的String对象保存到v2中。</p>
+<h3 id="方法的定义"><a href="#方法的定义" class="headerlink" title="方法的定义"></a>方法的定义</h3><p>private static int sum(int a, int b) {</p>
+<pre><code>    return a+b;
+</code></pre>
+<p>}</p>
+<p>使用编译后是这样</p>
+<p>.method private static sum(II)I</p>
+<pre><code>.locals 4   表示需要申请4个本地寄存器
+
+.parameter
+
+.parameter 这里表示有两个参数
+
+.prologue
+
+.line 27
+
+move v0, p0
+
+.local v0, a:I
+
+move v1, p1
+
+.local v1, b:I
+
+move v2, v0
+
+move v3, v1
+
+add-int/2addr v2, v3
+
+move v0, v2
+
+.end local v0           a:I
+
+return v0
+</code></pre>
+<p>.end method</p>
+<p>从上面可以看到函数声明使用.method开始 .end method结束，java中的关键词private,static 等都可以使用，同时使用签名来表示唯一的方法，这里是sum(II)I。</p>
+<p>指令执行<br>smali字节码是类似于汇编的，如果你有汇编基础，理解起来是非常容易的。<br>比如：<br>move v0, v3 把v3寄存器的值移动到寄存器v0上.<br>const v0， 0x1 把值0x1赋值到寄存器v0上。<br>invoke-static {v4, v5}, Lme&#x2F;isming&#x2F;myapplication&#x2F;MainActivity;-&gt;sum(II)I 执行方法sum(),v4,v5的值分别作为sum的参数</p>
+<h3 id="条件跳转分支"><a href="#条件跳转分支" class="headerlink" title="条件跳转分支"></a>条件跳转分支</h3><p>“if-eq vA, vB, :cond_x”　—　如果vA等于vB则跳转到:cond_x</p>
+<p>“if-ne vA, vB, :cond_x”　—　如果vA不等于vB则跳转到:cond_x</p>
+<p>“if-lt vA, vB, :cond_x”　—　如果vA小于vB则跳转到:cond_x</p>
+<p>“if-ge vA, vB, :cond_x”　—　如果vA大于等于vB则跳转到:cond_x</p>
+<p>“if-gt vA, vB, :cond_x”　—　如果vA大于vB则跳转到:cond_x</p>
+<p>“if-le vA, vB, :cond_x”　—　如果vA小于等于vB则跳转到:cond_x</p>
+<p>“if-eqz vA, :cond_x”　—　如果vA等于0则跳转到:cond_x</p>
+<p>“if-nez vA, :cond_x”　—　如果vA不等于0则跳转到:cond_x</p>
+<p>“if-ltz vA, :cond_x”　—　如果vA小于0则跳转到:cond_x</p>
+<p>“if-gez vA, :cond_x”　—　如果vA大于等于0则跳转到:cond_x</p>
+<p>“if-gtz vA, :cond_x”　—　如果vA大于0则跳转到:cond_x</p>
+<p>“if-lez vA, :cond_x”　—　如果vA小于等于0则跳转到:cond_x</p>
+<p>常用修改技巧<br>const-string v0,”json数据”     &#x2F;&#x2F;写死抓包返回的vip信息的数据</p>
+<p>goto :cond_x       &#x2F;&#x2F;无视后面的任何判断，直接跳转到校验成功后的代码段</p>
+<p>return-void       &#x2F;&#x2F;如果方法是返回的void，直接在某个代码的后面加上，终止后面的代码的执行</p>
+<p>const&#x2F;4 v0,0x1    &#x2F;&#x2F;对于判断，写死true 0x1或者false 0x0</p>
+<p>某行代码前添加#，代表该行代码被注释掉，和删掉这行代码一样，但方便恢复</p>
+<p>if-eq&#x2F;…          &#x2F;&#x2F;直接修改判断条件</p>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Android布局]]></title>
       <url>/2024/10/01/Android%E5%B8%83%E5%B1%80/</url>
       <content type="html"><![CDATA[<h1 id="布局格式"><a href="#布局格式" class="headerlink" title="布局格式"></a>布局格式</h1><h2 id="线性布局LinearLayout"><a href="#线性布局LinearLayout" class="headerlink" title="线性布局LinearLayout"></a>线性布局LinearLayout</h2><p><code>线性布局（LinearLayout）</code>主要以水平或垂直方式来排列界面中的控件。并将控件排列到一条直线上。在线性布局中，如果水平排列，垂直方向上只能放一个控件，如果垂直排列，水平方向上也只能方一个控件。</p>

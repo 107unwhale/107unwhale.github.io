@@ -19,18 +19,22 @@
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     
     <meta name="description" content="">
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2024/10/index.html">
+    <meta name="description" content="Smali是什么Smali是Android虚拟机的反汇编语言。Android虚拟机的可执行文件并不是普通的class文件，而是再重新整合打包后生成的dex文件。dex文件反编译之后就是Smali代码，所以说，Smali语言是Android虚拟机的反汇编语言。动态调试APK，通常静态分析APK是不够的，如果需要彻底分析APK的执行逻辑，需要通过动态调试来进行。修改APK运行逻辑，通过修改Smali代">
+<meta property="og:type" content="article">
+<meta property="og:title" content="smali入门语法">
+<meta property="og:url" content="http://example.com/2024/10/14/smali%E5%85%A5%E9%97%A8%E8%AF%AD%E6%B3%95/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Smali是什么Smali是Android虚拟机的反汇编语言。Android虚拟机的可执行文件并不是普通的class文件，而是再重新整合打包后生成的dex文件。dex文件反编译之后就是Smali代码，所以说，Smali语言是Android虚拟机的反汇编语言。动态调试APK，通常静态分析APK是不够的，如果需要彻底分析APK的执行逻辑，需要通过动态调试来进行。修改APK运行逻辑，通过修改Smali代">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-10-14T08:19:20.000Z">
+<meta property="article:modified_time" content="2024-10-18T08:41:24.403Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/ghk.ico">
     
-    <title>lock&#39;s Studio</title>
+    <title>smali入门语法 · lock&#39;s Studio</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -218,6 +222,8 @@
         }
     </script>
     
+        <body class="post-body">
+    
         <!-- header -->
         <header class="header header-mobile">
     <!-- top read progress line -->
@@ -247,6 +253,17 @@
     </div>
     <!-- toggle banner for post layout -->
     
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">Nothing</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">smali入门语法</a>
+            </div>
+        </div>
+    
 </header>
 
         <!-- fixed footer -->
@@ -273,24 +290,74 @@
 
 
 
+    height:50vh;
+
 ">
     
     <!-- 主页  -->
     
+        
+    <!-- 404页  -->
+    
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+            
+                smali入门语法
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+                
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+    
+</div>
+
+                
+                <!-- 文章字数统计 -->
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2024/10/14</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -420,79 +487,289 @@
 
             <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
             <div class="container container-unloaded">
-                <main class="main index-page">
+                <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="Smali是什么"><a href="#Smali是什么" class="headerlink" title="Smali是什么"></a>Smali是什么</h1><p>Smali是Android虚拟机的反汇编语言。Android虚拟机的可执行文件并不是普通的class文件，而是再重新整合打包后生成的dex文件。dex文件反编译之后就是Smali代码，所以说，Smali语言是Android虚拟机的反汇编语言。<br>动态调试APK，通常静态分析APK是不够的，如果需要彻底分析APK的执行逻辑，需要通过动态调试来进行。<br>修改APK运行逻辑，通过修改Smali代码，再重新编译打包成新的APK，是Android逆向的基本操作。<br>Smali基本语法</p>
+<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><table>
+<thead>
+<tr>
+<th>Smali(方法类型)</th>
+<th>代码</th>
+<th>Java</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>V</td>
+<td>return-void</td>
+<td>void</td>
+<td>只能用于返回值类型</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>const&#x2F;4 v0,0x1</td>
+<td>boolean</td>
+<td>布尔值类型，判断逻辑</td>
+</tr>
+<tr>
+<td>Ljava&#x2F;lang&#x2F;String;</td>
+<td>const-string v0,”字符串”</td>
+<td>String</td>
+<td>字符串类型</td>
+</tr>
+<tr>
+<td>I</td>
+<td>const&#x2F;4 v0,0x1</td>
+<td>int</td>
+<td>整数类型</td>
+</tr>
+<tr>
+<td><em><strong>*Lpackage&#x2F;name;*</strong></em></td>
+<td>Lpackage&#x2F;name;</td>
+<td>对象类型</td>
+<td>L表示这是一个对象类型，package表示该对象所在的包，; 表示对象名称的结束</td>
+</tr>
+<tr>
+<td>S</td>
+<td>const&#x2F;16 v0, 0x64</td>
+<td>short</td>
+<td>短整数类型</td>
+</tr>
+<tr>
+<td>J</td>
+<td>const-wide&#x2F;32 v0, 0x186a0</td>
+<td>long</td>
+<td>长整数类型</td>
+</tr>
+<tr>
+<td>F</td>
+<td>const&#x2F;high16 v0, 0x42c80000</td>
+<td>float</td>
+<td>浮点数类型</td>
+</tr>
+<tr>
+<td>D</td>
+<td>const-wide&#x2F;high16 v0, 0x4059000000000000L</td>
+<td>double</td>
+<td>双浮点数类型</td>
+</tr>
+<tr>
+<td>C</td>
+<td>const&#x2F;16 v0, 0x61</td>
+<td>char</td>
+<td>字符类型</td>
+</tr>
+<tr>
+<td>B</td>
+<td>const&#x2F;4 v0, 0x1</td>
+<td>byte</td>
+<td>字节类型</td>
+</tr>
+<tr>
+<td>[类型</td>
+<td>[类型</td>
+<td>数组</td>
+<td>[l表示一个int型数据，[Ljava&#x2F;lang&#x2F;String 表示一个String的对象数组</td>
+</tr>
+</tbody></table>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="语法关键词"><a href="#语法关键词" class="headerlink" title="语法关键词"></a>语法关键词</h3><p>.class</p>
+<p>定义java类名</p>
+<p>.super</p>
+<p>定义父类名</p>
+<p>.source</p>
+<p>定义Java源文件名</p>
+<p>.filed</p>
+<p>定义字段</p>
+<p>.method</p>
+<p>定义方法开始</p>
+<p>.end method</p>
+<p>定义方法结束</p>
+<p>.annotation</p>
+<p>定义注解开始</p>
+<p>.end annotation</p>
+<p>定义注解结束</p>
+<p>.implements</p>
+<p>定义接口指令</p>
+<p>.local</p>
+<p>指定了方法内局部变量的个数</p>
+<p>.registers</p>
+<p>指定方法内使用寄存器的总数</p>
+<p>.prologue</p>
+<p>表示方法中代码的开始处</p>
+<p>.line</p>
+<p>表示java源文件中指定行</p>
+<p>.paramter</p>
+<p>指定了方法的参数</p>
+<p>.param</p>
+<p>和.paramter含义一致但是表达格式不同</p>
+<p>L表示这是一个对象类型，package表示该对象所在的包，; 表示对象名称的结束</p>
+<h3 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h3><p>Java中变量都是存放在内存中的，Android为了提高性能，变量都是存放在寄存器中的，寄存器为32位，可以支持任何类型。</p>
+<p>寄存器分为如下两类：<br>1、本地寄存器<br>用v开头数字结尾的符号来表示，v0, v1, v2,…<br>2、参数寄存器<br>用p开头数字结尾的符号来表示，p0,p1,p2,…<br>注意：<br>在非static方法中，p0代指this，p1为方法的第一个参数。<br>在static方法中，p0为方法的第一个参数。</p>
+<p>Smali代码示例</p>
+<p>const&#x2F;4 v0, 0x1 &#x2F;&#x2F;把值0x1存到v0本地寄存器</p>
+<p>iput-boolean v0,p0,Lcom&#x2F;aaa;-&gt;IsRegisterd:Z &#x2F;&#x2F;把v0中的值赋给com.aaa.IsRegistered，p0代表this，相当于this.Isregistered&#x3D;true</p>
+<h3 id="-1"><a href="#-1" class="headerlink" title=""></a></h3><h3 id="成员变量"><a href="#成员变量" class="headerlink" title="成员变量"></a>成员变量</h3><p>成员变量定义格式为：<br>.field public&#x2F;private [static][final] varName:&lt;类型&gt;</p>
+<p>获取指令<br>iget, sget, iget-boolean, sget-boolean, iget-object, sget-object</p>
+<p>操作指令<br>iput, sput, iput-boolean, sput-boolean, iput-object, sput-object<br>array的操作是aget和aput</p>
+<p>指令解析<br>sget-object v0,Lcom&#x2F;aaa;-&gt;ID:Ljava&#x2F;lang&#x2F;String;<br>获取ID这个String类型的成员变量并放到v0这个寄存器中<br>iget-object v0,p0,Lcom&#x2F;aaa;-&gt;view:Lcom&#x2F;aaa&#x2F;view;<br>iget-object比sget-object多一个参数p0，这个参数代表变量所在类的实例。这里p0就是this</p>
+<h3 id="Smali代码示例1："><a href="#Smali代码示例1：" class="headerlink" title="Smali代码示例1："></a>Smali代码示例1：</h3><p>const&#x2F;4 v3, 0x0</p>
+<p>sput-object v3, Lcom&#x2F;aaa;-&gt;timer:Lcom&#x2F;aaa&#x2F;timer;</p>
+<p>相当于java代码：this.timer &#x3D; null;</p>
+<p>Smali代码示例2：</p>
+<p>.local v0, args:Landroid&#x2F;os&#x2F;Message;</p>
+<p>const&#x2F;4 v1, 0x12</p>
+<p>iput v1,v0,Landroid&#x2F;os&#x2F;Message;-&gt;what:I</p>
+<p>相当于java代码：args.what &#x3D; 18;<br>其中args为Message的实例</p>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>函数定义格式为：<br>.method public&#x2F;private [static][final] methodName()&lt;类型&gt;<br>.end method</p>
+<p>Smali代码示例</p>
+<p>.method private ifRegistered()Z</p>
+<pre><code>.locals 2            // 本地寄存器的个数
+
+.prologue
+
+const/4 v0, 0x1      //v0赋值为1
+
+if-eqz v0, :cond_0   //判断v0是否等于0，等于0则跳到cond_0执行
+
+const/4 v1, 0x1      //符合条件分支
+
+:goto_0              //标签
+
+return v1            //返回v1的值
+
+:cond_0              //标签
+
+const/4 v1, 0x0      //cond_0分支
+
+goto :goto_0         //跳到goto_0执行
+</code></pre>
+<p>.end method</p>
+<p>函数分为两类：direct method和virtual method<br>direct method就是private方法，virtual method就是指其余的方法。</p>
+<p>调用指令：<br>invoke-direct<br>invoke-virtual<br>invoke-static<br>invoke-super<br>invoke-interface</p>
+<p>调用格式：<br>invoke-指令类型 {参数1, 参数2,…}, L类名;-&gt;方法名<br>如果不是是静态方法，参数1代表调用该方法的实例。</p>
+<p>Smali代码示例：</p>
+<p>const-string v0, “NDKLIB”</p>
+<p>invoke-static {v0}, Ljava&#x2F;lang&#x2F;System;-&gt;loadLibrary(Ljava&#x2F;lang&#x2F;String;)V</p>
+<p>相当于java代码：System.loadLibrary(“NDKLIB”)</p>
+<p>函数返回结果<br>Smali需要用指令move-result或move-result-object来保存函数返回的结果</p>
+<p>Smali代码示例：</p>
+<p>const-string v0, “Eric”</p>
+<p>invoke-static {v0}, Lcmb&#x2F;pbi;-&gt;t(Ljava&#x2F;lang&#x2F;String;)Ljava&#x2F;lang&#x2F;String;</p>
+<p>move-result-object v2</p>
+<p>表示将方法t返回的String对象保存到v2中。</p>
+<h3 id="方法的定义"><a href="#方法的定义" class="headerlink" title="方法的定义"></a>方法的定义</h3><p>private static int sum(int a, int b) {</p>
+<pre><code>    return a+b;
+</code></pre>
+<p>}</p>
+<p>使用编译后是这样</p>
+<p>.method private static sum(II)I</p>
+<pre><code>.locals 4   表示需要申请4个本地寄存器
+
+.parameter
+
+.parameter 这里表示有两个参数
+
+.prologue
+
+.line 27
+
+move v0, p0
+
+.local v0, a:I
+
+move v1, p1
+
+.local v1, b:I
+
+move v2, v0
+
+move v3, v1
+
+add-int/2addr v2, v3
+
+move v0, v2
+
+.end local v0           a:I
+
+return v0
+</code></pre>
+<p>.end method</p>
+<p>从上面可以看到函数声明使用.method开始 .end method结束，java中的关键词private,static 等都可以使用，同时使用签名来表示唯一的方法，这里是sum(II)I。</p>
+<p>指令执行<br>smali字节码是类似于汇编的，如果你有汇编基础，理解起来是非常容易的。<br>比如：<br>move v0, v3 把v3寄存器的值移动到寄存器v0上.<br>const v0， 0x1 把值0x1赋值到寄存器v0上。<br>invoke-static {v4, v5}, Lme&#x2F;isming&#x2F;myapplication&#x2F;MainActivity;-&gt;sum(II)I 执行方法sum(),v4,v5的值分别作为sum的参数</p>
+<h3 id="条件跳转分支"><a href="#条件跳转分支" class="headerlink" title="条件跳转分支"></a>条件跳转分支</h3><p>“if-eq vA, vB, :cond_x”　—　如果vA等于vB则跳转到:cond_x</p>
+<p>“if-ne vA, vB, :cond_x”　—　如果vA不等于vB则跳转到:cond_x</p>
+<p>“if-lt vA, vB, :cond_x”　—　如果vA小于vB则跳转到:cond_x</p>
+<p>“if-ge vA, vB, :cond_x”　—　如果vA大于等于vB则跳转到:cond_x</p>
+<p>“if-gt vA, vB, :cond_x”　—　如果vA大于vB则跳转到:cond_x</p>
+<p>“if-le vA, vB, :cond_x”　—　如果vA小于等于vB则跳转到:cond_x</p>
+<p>“if-eqz vA, :cond_x”　—　如果vA等于0则跳转到:cond_x</p>
+<p>“if-nez vA, :cond_x”　—　如果vA不等于0则跳转到:cond_x</p>
+<p>“if-ltz vA, :cond_x”　—　如果vA小于0则跳转到:cond_x</p>
+<p>“if-gez vA, :cond_x”　—　如果vA大于等于0则跳转到:cond_x</p>
+<p>“if-gtz vA, :cond_x”　—　如果vA大于0则跳转到:cond_x</p>
+<p>“if-lez vA, :cond_x”　—　如果vA小于等于0则跳转到:cond_x</p>
+<p>常用修改技巧<br>const-string v0,”json数据”     &#x2F;&#x2F;写死抓包返回的vip信息的数据</p>
+<p>goto :cond_x       &#x2F;&#x2F;无视后面的任何判断，直接跳转到校验成功后的代码段</p>
+<p>return-void       &#x2F;&#x2F;如果方法是返回的void，直接在某个代码的后面加上，终止后面的代码的执行</p>
+<p>const&#x2F;4 v0,0x1    &#x2F;&#x2F;对于判断，写死true 0x1或者false 0x0</p>
+<p>某行代码前添加#，代表该行代码被注释掉，和删掉这行代码一样，但方便恢复</p>
+<p>if-eq&#x2F;…          &#x2F;&#x2F;直接修改判断条件</p>
+
+    </article>
+    <!-- license -->
     
-        
-        
-        
-        
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2024/10/14/smali%E5%85%A5%E9%97%A8%E8%AF%AD%E6%B3%95/">
-                
-                <span class="abstract-title-text">smali入门语法</span>
-            </a>
-            <div class="abstract-content">
-                Smali是什么Smali是Android虚拟机的反汇编语言。Android虚拟机的可执行文件并不是普通的class文件，而是再重新整合打包后生成的dex文件。dex文件反编译之后就是Smali代码，所以说，Smali语言是Android虚拟机的反汇编语言。动态调试APK，通常静态分析APK是不够的，如果需要彻底分析APK的执行逻辑，需要通过动态调试来进行。修改APK运行逻辑，通过修改Smali代码，再重新编译打包成新的APK，是Android逆向的基本操作。Smali基本语法
-数据类型
-
-
-Smali(方法类型)
-代码
-Java
-备注
-
-
-
-V
-return-void
-void
-只能用...
-            </div>
-            <!-- read more -->
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/10/18">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/10/14</span>
-                </div>
-                <!-- tags -->
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
+        <div class="license-wrapper">
+            <p>Author：<a href="http://example.com">John Doe</a>
+            <p>Link：<a href="http://example.com/2024/10/14/smali%E5%85%A5%E9%97%A8%E8%AF%AD%E6%B3%95/">http://example.com/2024/10/14/smali%E5%85%A5%E9%97%A8%E8%AF%AD%E6%B3%95/</a>
+            <p>Publish date：<a href="http://example.com/2024/10/14/smali%E5%85%A5%E9%97%A8%E8%AF%AD%E6%B3%95/">October 14th 2024, 4:19:20 pm</a>
+            <p>Update date：<a href="http://example.com/2024/10/14/smali%E5%85%A5%E9%97%A8%E8%AF%AD%E6%B3%95/">October 18th 2024, 4:41:24 pm</a>
+            <p>License：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
     
-        
-        
-        
-        
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
             
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2024/10/01/Android%E5%B8%83%E5%B1%80/">
-                
-                <span class="abstract-title-text">Android布局</span>
-            </a>
-            <div class="abstract-content">
-                布局格式线性布局LinearLayout线性布局（LinearLayout）主要以水平或垂直方式来排列界面中的控件。并将控件排列到一条直线上。在线性布局中，如果水平排列，垂直方向上只能放一个控件，如果垂直排列，水平方向上也只能方一个控件。
-使用线性布局，需要将布局节点改成LinearLayout，基本格式如下：
-1234567891011 &lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;    xmlns:app=&quot;http://schemas.androi...
-            </div>
-            <!-- read more -->
+        </li>
+        <li class="previous">
             
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/10/10">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/10/01</span>
-                </div>
-                <!-- tags -->
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2024/10/01/Android%E5%B8%83%E5%B1%80/" title="Android布局">
+                    <div class="prevTitle">Android布局</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
     
-    <!-- paginator  -->
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
     
 </main>
 
@@ -590,6 +867,23 @@ void
 
         </div>
         <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Smali%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.</span> <span class="toc-text">Smali是什么</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.0.1.</span> <span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.2.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="toc-number">1.0.3.</span> <span class="toc-text">语法关键词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.0.4.</span> <span class="toc-text">寄存器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-1"><span class="toc-number">1.0.5.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="toc-number">1.0.6.</span> <span class="toc-text">成员变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Smali%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B1%EF%BC%9A"><span class="toc-number">1.0.7.</span> <span class="toc-text">Smali代码示例1：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-number">1.0.8.</span> <span class="toc-text">函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.0.9.</span> <span class="toc-text">方法的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E8%B7%B3%E8%BD%AC%E5%88%86%E6%94%AF"><span class="toc-number">1.0.10.</span> <span class="toc-text">条件跳转分支</span></a></li></ol></li></ol></li></ol>
+            </div>
         
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -821,6 +1115,8 @@ void
         <!-- CNZZ -->
         
         <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
         
         <!-- mermaid -->
         
